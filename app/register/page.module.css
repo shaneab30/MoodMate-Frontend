@@ -1,0 +1,33 @@
+.outercontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    /* min-width: 100vh; */
+}
+
+.form{
+    align-items: center;
+}
+
+.container{
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    width: 78vh;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.container h1{
+    color: black;
+}
+
+.button{
+    width: 25px;
+}
+
+.error{
+    color: red
+}
