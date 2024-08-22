@@ -6,6 +6,8 @@ import styles from "./page.module.css";
 import { FunctionComponent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { login } from '@/redux/features/userSlice';
 
 interface LoginPageProps {
 
@@ -16,6 +18,8 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
 
     const [formData, setformData] = useState({
         username: "",
@@ -32,7 +36,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         event.preventDefault();
     };
 
-    const login = async (event: React.FormEvent<HTMLFormElement>) => {
+    const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log("Login success")
 
@@ -51,6 +55,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
             const user = data.data.find((user:any) => user.username === formData.username);
             if (user && user.password === formData.password) {
+                dispatch(login(user));
                 console.log("Login success")
                 router.push("/articles");
             } else {
@@ -66,7 +71,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     return (<>
         <div className={styles.outercontainer}>
-            <form onSubmit={login}>
+            <form onSubmit={loginUser}>
                 <div className={styles.container}>
                     <h1>Login Page</h1>
                     <TextField id="username" label="Username" variant="outlined" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />

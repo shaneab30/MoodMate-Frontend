@@ -24,7 +24,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
         </div>
       </div>
       <div className={styles.container}>
-        Start Now!
+        <h1>Start Now!</h1>
       </div>
     </>
   );
