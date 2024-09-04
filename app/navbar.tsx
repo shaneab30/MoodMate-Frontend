@@ -1,11 +1,11 @@
 'use client';
 import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar } from "@mui/material";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from "next/link";
-import { useAppSelector } from '@/redux/hooks';
-import { logout } from "@/redux/features/userSlice";
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { login, logout } from "@/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 
 interface NavBarProps {
@@ -15,6 +15,7 @@ interface NavBarProps {
 const NavBar: FunctionComponent<NavBarProps> = () => {
 
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const pages = ['Register', 'Articles', 'Blog'];
     const settings = ['Profile', 'Account Settings', 'Logout'];
 
@@ -44,7 +45,8 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                 router.push('/profile');
                 break;
             case 'Logout':
-                logout();
+                dispatch(logout());
+                localStorage.removeItem("user");    
                 handleCloseUserMenu();
                 router.push('/login');
                 break;
@@ -54,28 +56,34 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         }
     }
 
+    useEffect(() => {
+        console.log(JSON.parse(localStorage.getItem("user")!))
+        const localUser = JSON.parse(localStorage.getItem("user")!)
+        dispatch(login(localUser))
+    }, [])
+
     return (
         <AppBar position="static" style={{ backgroundColor: 'black' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
+                    <Link href={"/"}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            sx={{
+                                mr: 2,
+                                display: { xs: 'none', md: 'flex' },
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            LOGO
+                        </Typography>
+                    </Link>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -107,30 +115,30 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Link href="/register" key={page}><Typography textAlign="center">{page}</Typography></Link>
+                                    <Link href={`/${page.toLocaleLowerCase()}`} key={page}><Typography textAlign="center">{page}</Typography></Link>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
+                    <Link href={"/"}>
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            sx={{
+                                mr: 2,
+                                display: { xs: 'flex', md: 'none' },
+                                flexGrow: 1,
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            LOGO
+                        </Typography>
+                    </Link>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
@@ -148,7 +156,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                         {currentUser ? (
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt={currentUser.username} src="/static/images/avatar/2.jpg" />
                                 </IconButton>
                             </Tooltip>
                         ) : (

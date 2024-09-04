@@ -3,10 +3,10 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { Alert, Button, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { error } from "console";
 import styles from "./page.module.css";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from '@/redux/features/userSlice';
 
 interface LoginPageProps {
@@ -19,6 +19,8 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const [items, setItems] = useState([]);
+    const currentUser = useAppSelector((state) => state.user.currentUser)
 
 
     const [formData, setformData] = useState({
@@ -56,7 +58,9 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
             const user = data.data.find((user:any) => user.username === formData.username);
             if (user && user.password === formData.password) {
                 dispatch(login(user));
+                console.log(dispatch(login(user)));
                 console.log("Login success")
+                localStorage.setItem("user" ,JSON.stringify(user));
                 router.push("/articles");
             } else {
                 console.log("Login failed")
