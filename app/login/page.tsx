@@ -19,8 +19,8 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [items, setItems] = useState([]);
-    const currentUser = useAppSelector((state) => state.user.currentUser)
+    // const [items, setItems] = useState([]);
+    // const currentUser = useAppSelector((state) => state.user.currentUser)
 
 
     const [formData, setformData] = useState({
@@ -55,63 +55,75 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
             const data = await loginUsers.json();
             console.log(data)
 
-            const user = data.data.find((user:any) => user.username === formData.username);
+            const user = data.data.find((user: any) => user.username === formData.username);
             if (user && user.password === formData.password) {
                 dispatch(login(user));
                 console.log(dispatch(login(user)));
                 console.log("Login success")
-                localStorage.setItem("user" ,JSON.stringify(user));
+                localStorage.setItem("user", JSON.stringify(user));
                 router.push("/articles");
             } else {
                 console.log("Login failed")
             }
 
         }
-        
+
         catch (error) {
             console.log(error);
         }
     }
 
     return (<>
-        <div className={styles.outercontainer}>
-            <form onSubmit={loginUser}>
-                <div className={styles.container}>
-                    <h1>Login Page</h1>
-                    <TextField id="username" label="Username" variant="outlined" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
-                    <FormControl variant="outlined">
-                        <InputLabel htmlFor="password">Password</InputLabel>
-                        <OutlinedInput
-                            id="password"
-                            required
-                            type={showPassword ? 'text' : 'password'}
-                            value={formData.password}
-                            onChange={handlePasswordChange}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            label="Password"
-                        />
-                    </FormControl>
-                    <div className={styles.button}>
-                        <Button variant="contained" type="submit">Login</Button>
+        <div className={styles.bgImage}>
+            <div className={styles.outercontainer}>
+                <form onSubmit={loginUser}>
+                    <div className={styles.container}>
+                        <h1>Sign in</h1>
+                        <div className={styles.text}>
+                            <TextField
+                                id="username"
+                                label="Username"
+                                variant="standard"
+                                required
+                                value={formData.username}
+                                onChange={(e) => setformData({ ...formData, username: e.target.value })}
+                            />
+                            <TextField
+                                id="password"
+                                label="Password"
+                                variant="standard"
+                                required
+                                type={showPassword ? 'text' : 'password'}
+                                value={formData.password}
+                                onChange={handlePasswordChange}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                                style={{ paddingRight: "20px" }}
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
+                        <div className={styles.button}>
+                            <Button variant="contained" type="submit" style={{ backgroundColor: "black" }}>Login</Button>
+                        </div>
+                        <div className={styles.register}>
+                            <p>Don't have an account?&nbsp;
+                                <Link href="/sign-up" style={{ textDecoration: "underline" }}>Sign Up</Link>
+                            </p>
+                        </div>
                     </div>
-                    <div className={styles.register}>
-                        <p>Don't have an account?
-                            <Link href="/register" style={{ color: "blue" }}> Register</Link>
-                        </p>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </>);
 }

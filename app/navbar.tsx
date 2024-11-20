@@ -16,7 +16,8 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
 
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const pages = ['Register', 'Articles', 'Blog'];
+    const pagesBeforeLogin = ['Sign Up', 'Articles'];
+    const pagesAfterLogin = ['Articles', 'CBT Test'];
     const settings = ['Profile', 'Account Settings', 'Logout'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -46,7 +47,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                 break;
             case 'Logout':
                 dispatch(logout());
-                localStorage.removeItem("user");    
+                localStorage.removeItem("user");
                 handleCloseUserMenu();
                 router.push('/login');
                 break;
@@ -63,7 +64,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     }, [])
 
     return (
-        <AppBar position="static" style={{ backgroundColor: 'black' }}>
+        <AppBar position="static" style={{ backgroundColor: "#7F7979" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -113,11 +114,19 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Link href={`/${page.toLocaleLowerCase()}`} key={page}><Typography textAlign="center">{page}</Typography></Link>
-                                </MenuItem>
-                            ))}
+                            {currentUser ? (
+                                pagesAfterLogin.map((page) => (
+                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                        <Link href={`/${page.toLocaleLowerCase().replace(/\s+/g, "-")}`} key={page}><Typography textAlign="center">{page}</Typography></Link>
+                                    </MenuItem>
+                                ))
+                            ) : (
+                                pagesBeforeLogin.map((page) => (
+                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                        <Link href={`/${page.toLocaleLowerCase().replace(/\s+/g, "-")}`} key={page}><Typography textAlign="center">{page}</Typography></Link>
+                                    </MenuItem>
+                                ))
+                            )}
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -140,16 +149,30 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                         </Typography>
                     </Link>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {/* <Link href="/register" key={page}>{page}</Link> */}
-                                <Link href={`/${page.toLowerCase()}`} key={page}>{page}</Link>
-                            </Button>
-                        ))}
+                        {currentUser ? (
+                            pagesAfterLogin.map((page) => (
+                                <Button
+                                    key={page}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    {/* <Link href="/register" key={page}>{page}</Link> */}
+                                    <Link href={`/${page.toLowerCase().replace(/\s+/g, "-")}`} key={page}>{page}</Link>
+                                </Button>
+                            ))
+                        ) : (
+                            pagesBeforeLogin.map((page) => (
+                                <Button
+                                    key={page}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    {/* <Link href="/register" key={page}>{page}</Link> */}
+                                    <Link href={`/${page.toLowerCase().replace(/\s+/g, "-")}`} key={page}>{page}</Link>
+                                </Button>
+                            ))
+                        )}
+
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -161,7 +184,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                             </Tooltip>
                         ) : (
                             <Link href="/login">
-                                <Button variant="outlined" sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
+                                <Button variant="text" sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
                             </Link>
                         )}
                         <Menu

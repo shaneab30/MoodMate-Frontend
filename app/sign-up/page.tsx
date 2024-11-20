@@ -45,7 +45,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             console.log(formData)
             setError("")
             setalertInfo("Register success")
-            
+
             const url = "http://127.0.0.1:5000/users/register"
             const postUsers = await fetch(url, {
                 headers: {
@@ -53,8 +53,8 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                     'Content-Type': "application/json;charset=utf-8"
                 },
                 method: "POST",
-                body: JSON.stringify({"username" : formData.username, "email" : formData.email, "password" : formData.password, "age" : formData.age}),
-            }) 
+                body: JSON.stringify({ "username": formData.username, "email": formData.email, "password": formData.password, "age": formData.age }),
+            })
 
             const postUsersJson = await postUsers.json()
             console.log(postUsersJson)
@@ -62,52 +62,59 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
             setTimeout(() => {
                 router.push("/login")
-            },500);
+            }, 500);
         }
     }
 
     return (
         <div className={styles.outercontainer}>
-            <form className={styles.form} onSubmit={submit}>
+            <form onSubmit={submit}>
                 <div className={styles.container}>
-                    <h1>Register</h1>
-                    <TextField id="username" label="Username" variant="outlined" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
-                    <TextField id="email" label="Email" variant="outlined" type="email" required value={formData.email} onChange={(e) => setformData({ ...formData, email: e.target.value })} />
-                    <FormControl variant="outlined">
-                        <InputLabel htmlFor="password">Password</InputLabel>
-                        <OutlinedInput
-                            id="password"
-                            required
-                            type={showPassword ? 'text' : 'password'}
-                            value={formData.password}
-                            onChange={handlePasswordChange}
-                            endAdornment={
+                    <div className={styles.text}>
+                        <h1>Sign Up</h1>
+                        <p>Already have an account?&nbsp;
+                            <Link href="/login" style={{ textDecoration: "underline" }}>Login</Link>
+                        </p>
+                        <TextField id="username" label="Username" variant="standard" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
+                        <TextField id="email" label="Email" variant="standard" type="email" required value={formData.email} onChange={(e) => setformData({ ...formData, email: e.target.value })} />
+                        <TextField id="password" label="Password" variant="standard" required type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handlePasswordChange} InputProps={{
+                            endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
                                         onMouseDown={handleMouseDownPassword}
                                         edge="end"
+                                        style={{ paddingRight: "20px" }}
                                     >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
-                            }
-                            label="Password"
-                        />
-                        {error && <div className={styles.error}>
-                            <Alert severity="error">{error}</Alert></div>}
-                        {alertInfo && <div className={styles.error}>
-                            <Alert severity="success">{alertInfo}</Alert></div>}
-                    </FormControl>
-                    <TextField id="age" label="Age" variant="outlined" required value={formData.age} onChange={(e) => setformData({ ...formData, age: e.target.value })} />
-                    <div className={styles.button}>
-                        <Button variant="contained" type="submit">Register</Button>
+                            ),
+                        }}
+                            error={!!error}
+                            helperText={error || alertInfo} />
+                        <TextField id="age" label="Age" variant="standard" required value={formData.age} onChange={(e) => setformData({ ...formData, age: e.target.value })} />
+                        <div className={styles.button}>
+                            <Button variant="contained" type="submit" style={{ width: "100%", borderRadius: "18px", height: "45px" , backgroundColor: "black"}}>Sign Up</Button>
+                        </div>
+                        <p><Link href="/" style={{ fontSize: "12px" }}>By signing up, you agree to our Terms of Service and Privacy Policy</Link>.</p>
+                    </div>
+                    <div className={styles.image}>
+                        <img
+                            src="https://imgur.com/1OpAhUn.png"
+                            alt="image1"
+                            width={450}
+                            height={320}
+                            style={{ borderRadius: "15px 15px 0px 0px" }} />
+                            <div className={styles.desc}>
+                                <h2>Test</h2>
+                            </div>
                     </div>
                 </div>
-            </form>
+            </form >
 
-        </div>);
+        </div >);
 }
 
 export default RegisterPage;
