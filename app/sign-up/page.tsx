@@ -108,7 +108,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                             height={320}
                             style={{ borderRadius: "15px 15px 0px 0px" }} />
                             <div className={styles.desc}>
-                                <h2>Test</h2>
+                                <p>Sign up and start your journey to better mental health with us today</p>
                             </div>
                     </div>
                 </div>

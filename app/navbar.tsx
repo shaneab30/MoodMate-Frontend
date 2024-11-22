@@ -64,27 +64,29 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     }, [])
 
     return (
-        <AppBar position="static" style={{ backgroundColor: "#7F7979" }}>
+        <AppBar position="static" className="navbar" style={{ backgroundColor: "#6D696A" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Link href={"/"}>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            LOGO
-                        </Typography>
-                    </Link>
+                    {/* <Link href={"/"}> */}
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        href="/"
+                        component="a"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'none', md: 'flex' },
+
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        LOGO
+                    </Typography>
+                    {/* </Link> */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -130,24 +132,25 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Link href={"/"}>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'flex', md: 'none' },
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            LOGO
-                        </Typography>
-                    </Link>
+
+                    <Typography
+                        variant="h5"
+                        noWrap
+                        href="/"
+                        component="a"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'flex', md: 'none' },
+                            flexGrow: 1,
+                            // fontFamily: 'Montserrat, sans-serif',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        LOGO
+                    </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {currentUser ? (
                             pagesAfterLogin.map((page) => (

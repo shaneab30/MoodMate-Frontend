@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -86,6 +87,24 @@ body {
   background-color: white;
   padding: 0;
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+h1, h2, h3 {
+  font-family: 'Montserrat', sans-serif;
+}
+p {
+  font-family: 'Montserrat', sans-serif;
+}
+.navbar {
+  font-family: 'Roboto', sans-serif;
+}
+
+.MuiTypography-root {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.MuiButton-root {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 body {
@@ -96,6 +115,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    font-family: 'Montserrat', sans-serif;
 }
 
 a {

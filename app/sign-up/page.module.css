@@ -38,23 +38,33 @@
 }
 
 .image {
-    /* display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px; */
-    background-color: #323031;
+    /* width: 60vh; */
+    background-color: white;
     margin: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .25);
     border-radius: 15px;
     /* transition: box-shadow .5s; */
-
+    color: black;
 }
 
-.desc {
-    color: white;
-    padding: 20px;
+.image p {
+    max-width: 450px;
+    display: flex;
+    color: black;
+    padding: 40px;
     text-align: center;
 }
+
+/* .desc {
+    width: 55vh;
+    font-size: 18px;
+    align-items: center;
+    color: black;
+    padding: 20px;
+    text-align: center;
+} */
 
 .button {
     padding-top:10px ;
