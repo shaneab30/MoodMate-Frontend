@@ -78,7 +78,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
             <div className={styles.outercontainer}>
                 <form onSubmit={loginUser}>
                     <div className={styles.container}>
-                        <h1>Sign in</h1>
+                        <h1>Sign In</h1>
                         <div className={styles.text}>
                             <TextField
                                 id="username"
@@ -114,7 +114,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                             />
                         </div>
                         <div className={styles.button}>
-                            <Button variant="contained" type="submit" style={{ backgroundColor: "black" }}>Login</Button>
+                            <Button variant="contained" type="submit" style={{ backgroundColor: "black" , width: "24%"}}>Sign In</Button>
                         </div>
                         <div className={styles.register}>
                             <p>Don't have an account?&nbsp;

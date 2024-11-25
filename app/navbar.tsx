@@ -16,8 +16,8 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
 
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const pagesBeforeLogin = ['Sign Up', 'Articles'];
-    const pagesAfterLogin = ['Articles', 'CBT Test'];
+    const pagesBeforeLogin = ['Home', 'Articles'];
+    const pagesAfterLogin = ['Home', 'Articles', 'CBT Test'];
     const settings = ['Profile', 'Account Settings', 'Logout'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -49,7 +49,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                 dispatch(logout());
                 localStorage.removeItem("user");
                 handleCloseUserMenu();
-                router.push('/login');
+                router.push('/sign-in');
                 break;
             default:
                 console.log(`Handler function for ${key} not found`);
@@ -186,8 +186,8 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                 </IconButton>
                             </Tooltip>
                         ) : (
-                            <Link href="/login">
-                                <Button variant="text" sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
+                            <Link href="/sign-in">
+                                <Button variant="text" sx={{ my: 2, color: 'white', display: 'block' }}>Sign in</Button>
                             </Link>
                         )}
                         <Menu

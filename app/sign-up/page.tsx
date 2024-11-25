@@ -61,7 +61,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
 
             setTimeout(() => {
-                router.push("/login")
+                router.push("/sign-in")
             }, 500);
         }
     }
@@ -73,7 +73,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                     <div className={styles.text}>
                         <h1>Sign Up</h1>
                         <p>Already have an account?&nbsp;
-                            <Link href="/login" style={{ textDecoration: "underline" }}>Login</Link>
+                            <Link href="/sign-in" style={{ textDecoration: "underline" }}>Sign In</Link>
                         </p>
                         <TextField id="username" label="Username" variant="standard" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
                         <TextField id="email" label="Email" variant="standard" type="email" required value={formData.email} onChange={(e) => setformData({ ...formData, email: e.target.value })} />
@@ -107,7 +107,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                             width={450}
                             height={320}
                             style={{ borderRadius: "15px 15px 0px 0px" }} />
-                            <div className={styles.desc}>
+                            <div>
                                 <p>Sign up and start your journey to better mental health with us today</p>
                             </div>
                     </div>

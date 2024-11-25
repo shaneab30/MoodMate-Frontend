@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import styles from "./page.module.css";
+import Link from "next/link";
 
 interface ArticlesPageProps {
 
@@ -20,7 +21,70 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                 <h1 style={{ color: "black" }}>Articles Page</h1>
             </div>
             <div className={styles.cards}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Link href="/article1">
+                    <div className={styles.card}>
+                        <img
+                            src="https://imgur.com/1OpAhUn.png"
+                            alt="image1"
+                            width={300}
+                            height={200}
+                            style={{ borderRadius: "10px 10px 0px 0px" }} />
+                        <div className={styles.cardTitle}>
+                            <p>Mengapa Kesehatan Mental Sama Pentingnya dengan Kesehatan Fisik?</p>
+                        </div>
+                        <div className={styles.cardButton}>
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                        </div>
+                    </div>
+                </Link>
+                <div className={styles.card}>
+                    <img
+                        src="https://imgur.com/1OpAhUn.png"
+                        alt="image1"
+                        width={300}
+                        height={200}
+                        style={{ borderRadius: "10px 10px 0px 0px" }} />
+                    <div className={styles.cardTitle}>
+                        <p>Mengapa Kesehatan Mental Sama Pentingnya dengan Kesehatan Fisik?</p>
+                    </div>
+                    <div className={styles.cardButton}>
+                        <Button size="small">Share</Button>
+                        <Button size="small">Learn More</Button>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <img
+                        src="https://imgur.com/1OpAhUn.png"
+                        alt="image1"
+                        width={300}
+                        height={200}
+                        style={{ borderRadius: "10px 10px 0px 0px" }} />
+                    <div className={styles.cardTitle}>
+                        <p>Mengapa Kesehatan Mental Sama Pentingnya dengan Kesehatan Fisik?</p>
+                    </div>
+                    <div className={styles.cardButton}>
+                        <Button size="small">Share</Button>
+                        <Button size="small">Learn More</Button>
+                    </div>
+                </div><div className={styles.card}>
+                    <img
+                        src="https://imgur.com/1OpAhUn.png"
+                        alt="image1"
+                        width={300}
+                        height={200}
+                        style={{ borderRadius: "10px 10px 0px 0px" }} />
+                    <div className={styles.cardTitle}>
+                        <p>Mengapa Kesehatan Mental Sama Pentingnya dengan Kesehatan Fisik?</p>
+                    </div>
+                    <div className={styles.cardButton}>
+                        <Button size="small">Share</Button>
+                        <Button size="small">Learn More</Button>
+                    </div>
+                </div>
+
+
+                {/* <Card sx={{ maxWidth: 345 }}>
                     <CardMedia
                         sx={{ height: 140 }}
                         image="/static/images/cards/contemplative-reptile.jpg"
@@ -99,7 +163,7 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                         <Button size="small">Share</Button>
                         <Button size="small">Learn More</Button>
                     </CardActions>
-                </Card>
+                </Card> */}
             </div>
         </div>
     </>);
