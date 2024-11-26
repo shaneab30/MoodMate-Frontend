@@ -1,22 +1,31 @@
-.container {
+/* .container {
   color: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* min-height: 80vh;
-    height: 100%;
-    width: 100%;
-    min-width: auto; */
+} */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-mono);
+  margin: 10px;
 }
 
 .title {
   margin: 50px;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.content {
+  height: 100vh;
 }
 
 .cards {
@@ -26,7 +35,8 @@
   align-items: center;
   width: 100%;
   gap: 20px;
-  padding: 20px;
+  padding: 10px;
+  margin: auto;
 }
 
 .card {
@@ -36,7 +46,6 @@
   /* justify-content: center; */
   /* align-items: center; */
   background-color: whitesmoke;
-  margin: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   color: black;
@@ -57,11 +66,14 @@
   font-weight: 500;
 }
 
-.card .cardButton{
+.card .cardButton {
   max-width: 300px;
   padding: 5px;
-  display: flex; /* Enable flexbox */
-  justify-content: flex-start; /* Align items to the left */
+  display: flex;
+  /* Enable flexbox */
+  justify-content: flex-start;
+  /* Align items to the left */
   flex-direction: row;
-  gap: 10px; /* Optional: Add spacing between the buttons */
+  gap: 10px;
+  /* Optional: Add spacing between the buttons */
 }

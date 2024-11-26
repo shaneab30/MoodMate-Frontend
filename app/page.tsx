@@ -11,7 +11,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.header}>
+        {/* <div className={styles.header}> */}
           <div className={styles.title}>
             <h1>Welcome to MoodMate</h1>
             <h2>Your Mental Health</h2>
@@ -25,7 +25,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
               height={320}
               style={{ borderRadius: "20px" }} />
           </div>
-        </div>
+        {/* </div> */}
       </div>
       {/* <div className={styles.introContainer}> */}
         <div className={styles.intro}>
