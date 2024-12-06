@@ -1,47 +1,70 @@
+'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { loadEnvFile } from "process";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress/LinearProgress";
+import Box from "@mui/material/Box/Box";
 
 interface HomePageProps {
 
 }
 
 const HomePage: FunctionComponent<HomePageProps> = () => {
+
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 750);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // if (loading) {
+  //   return (
+  //     <Box sx={{ width: '100%' }}>
+  //       <LinearProgress />
+  //     </Box>
+  //   );
+  // }
+
+
   return (
     <>
       <div className={styles.container}>
         {/* <div className={styles.header}> */}
-          <div className={styles.title}>
-            <h1>Welcome to MoodMate</h1>
-            <h2>Your Mental Health</h2>
-            <h3>Companian</h3>
-          </div>
-          <div className={styles.image}>
-            <img
-              src="https://imgur.com/Aisv6mt.png"
-              alt="image1"
-              width={450}
-              height={320}
-              style={{ borderRadius: "20px" }} />
-          </div>
+        <div className={styles.title}>
+          <h1>Welcome to MoodMate</h1>
+          <h2>Your Mental Health</h2>
+          <h3>Companian</h3>
+        </div>
+        <div className={styles.image}>
+          <img
+            src="https://imgur.com/Aisv6mt.png"
+            alt="image1"
+            width={450}
+            height={320}
+            style={{ borderRadius: "20px" }} />
+        </div>
         {/* </div> */}
       </div>
       {/* <div className={styles.introContainer}> */}
-        <div className={styles.intro}>
-          <div className={styles.introDesc}>
-            <p>
-              At MoodMate, we understand the importance of mental well-being in achieving a balanced and fulfilling life. That’s why we’ve created a trusted platform to guide you through your mental health journey.
+      <div className={styles.intro}>
+        <div className={styles.introDesc}>
+          <p>
+            At MoodMate, we understand the importance of mental well-being in achieving a balanced and fulfilling life. That’s why we’ve created a trusted platform to guide you through your mental health journey.
 
-              Whether you're seeking support, tools to manage stress, or a space to reflect, MoodMate is here to help. Our personalized resources, mood tracking, and expert advice are designed to empower you every step of the way.
+            Whether you're seeking support, tools to manage stress, or a space to reflect, MoodMate is here to help. Our personalized resources, mood tracking, and expert advice are designed to empower you every step of the way.
 
-              Discover a safe space for self-care, growth, and connection. With MoodMate, you’re never alone. Let’s take care of your mental health—together.
-            </p>
-          </div>
-          <div className={styles.introTitle}>
-            <h1>What is MoodMate?</h1>
-          </div>
+            Discover a safe space for self-care, growth, and connection. With MoodMate, you’re never alone. Let’s take care of your mental health—together.
+          </p>
         </div>
+        <div className={styles.introTitle}>
+          <h1>What is MoodMate?</h1>
+        </div>
+      </div>
       {/* </div> */}
       <div className={styles.cardsContainer}>
         <h1 style={{ padding: "20px" }}>Why is Your Mental Health Important?</h1>

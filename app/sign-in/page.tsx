@@ -1,6 +1,6 @@
 'use client';
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { Alert, Button, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Alert, Box, Button, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { error } from "console";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
@@ -16,9 +16,12 @@ interface LoginPageProps {
 const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const [showPassword, setShowPassword] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const [error, setError] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
     // const [items, setItems] = useState([]);
     // const currentUser = useAppSelector((state) => state.user.currentUser)
 
@@ -27,6 +30,14 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         username: "",
         password: "",
     });
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    }
+
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setformData({ ...formData, password: event.target.value });
@@ -40,11 +51,16 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("Login success")
+        if (!formData.username || !formData.password) {
+            setError("Username and password are required.");
+            return;
+        }
 
+        setError(null);
+        setLoading(true);
         try {
             const url = "http://127.0.0.1:5000/users"
-            const loginUsers = await fetch(url, {
+            const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
                     'Content-Type': "application/json;charset=utf-8"
@@ -52,28 +68,51 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                 method: "GET",
             });
 
-            const data = await loginUsers.json();
-            console.log(data)
-
+            if (!response.ok) {
+                throw new Error("Failed to fetch user data.");
+            }
+            const data = await response.json();
+            // console.log(data.data);
             const user = data.data.find((user: any) => user.username === formData.username);
+
             if (user && user.password === formData.password) {
                 dispatch(login(user));
-                console.log(dispatch(login(user)));
+                // console.log(dispatch(login(user)));
                 console.log("Login success")
                 localStorage.setItem("user", JSON.stringify(user));
-                router.push("/articles");
+                
+                setOpen1(true);
+                setTimeout(() => {
+                    setLoading(false);
+                    router.push("/articles");
+                }, 1000);
+                
             } else {
-                console.log("Login failed")
+                console.log("Login failed");
+                
+                setTimeout(() => {
+                    setOpen(true);
+                    setLoading(false);
+                    setError("Invalid username or password.");
+                }, 1000);
+                setError(null);
             }
-
-        }
-
-        catch (error) {
+        } catch (error) {
             console.log(error);
+            setError("An error occurred while logging in. Please try again.");
+            setTimeout(() => {
+                setOpen(true);
+                setLoading(false);
+            }, 1000);
         }
     }
 
     return (<>
+        {loading && (
+            <Box sx={{ width: '100%' }}>
+                <LinearProgress />
+            </Box>
+        )}
         <div className={styles.bgImage}>
             <div className={styles.outercontainer}>
                 <form onSubmit={loginUser}>
@@ -114,7 +153,18 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                             />
                         </div>
                         <div className={styles.button}>
-                            <Button variant="contained" type="submit" style={{ backgroundColor: "black" , width: "24%"}}>Sign In</Button>
+                            <Button variant="contained" type="submit" style={{ backgroundColor: "black", width: "24%" }}>Sign In</Button>
+                            <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
+                                    {error}
+                                </Alert>
+                            </Snackbar>
+
+                            <Snackbar open={open1} autoHideDuration={100000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="success" sx={{ width: '500px' }}>
+                                    Success!
+                                </Alert>
+                            </Snackbar>
                         </div>
                         <div className={styles.register}>
                             <p>Don't have an account?&nbsp;
@@ -125,6 +175,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                 </form>
             </div>
         </div>
+
     </>);
 }
 

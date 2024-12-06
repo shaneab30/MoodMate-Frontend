@@ -27,11 +27,11 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                     <Link href="/article1">
                         <div className={styles.card}>
                             <img
-                                src="https://imgur.com/1OpAhUn.png"
+                                src="https://imgur.com/KsQmBBX.png"
                                 alt="image1"
                                 width={300}
                                 height={200}
-                                style={{ borderRadius: "10px 10px 0px 0px" }} />
+                                style={{ borderRadius: "10px 10px 0px 0px", objectFit: "cover" }} />
                             <div className={styles.cardTitle}>
                                 <p>Mengapa Kesehatan Mental Sama Pentingnya dengan Kesehatan Fisik?</p>
                             </div>
