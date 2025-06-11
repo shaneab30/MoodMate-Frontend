@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { login, logout } from "@/redux/features/userSlice";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface NavBarProps {
 
@@ -67,26 +68,30 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         <AppBar position="static" className="navbar" style={{ backgroundColor: "#6D696A" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    {/* <Link href={"/"}> */}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        href="/"
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
-                    {/* </Link> */}
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                        <Image
+                            src="/logo.png"
+                            alt="MoodMate Logo"
+                            width={40}
+                            height={40}
+                            style={{ marginRight: '5px', borderRadius: '10%' }}
+                        />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{
+                                mr: 2,
+                                fontWeight: 700,
+                                letterSpacing: '.2rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            MoodMate
+                        </Typography>
+                    </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -131,26 +136,29 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                             )}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        href="/"
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            // fontFamily: 'Montserrat, sans-serif',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', flexGrow: 1 }}>
+                        <Image
+                            src="/logo.png"
+                            alt="MoodMate Logo"
+                            width={32}
+                            height={32}
+                            style={{ marginRight: '5px', borderRadius: '10%' }}
+                        />
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{
+                                fontWeight: 700,
+                                letterSpacing: '.2rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            MoodMate
+                        </Typography>
+                    </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {currentUser ? (
                             pagesAfterLogin.map((page) => (
