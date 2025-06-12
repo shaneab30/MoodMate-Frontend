@@ -35,3 +35,45 @@
     flex-direction: column;
 
 }
+
+.description {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    width: 80%;
+    /* margin-left: 200px;
+    margin-right: 200px; */
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: black;
+}  
+
+.update{
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: "10px 10px"; 
+    background-color: rgba(255, 255,255, 0.5);
+    border: 0.5px solid;
+    border-color:  rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 80%;
+    color: black;
+}
+
+
+.update form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.update .error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}

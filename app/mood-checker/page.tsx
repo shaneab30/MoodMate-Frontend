@@ -24,6 +24,7 @@ const VisuallyHiddenInput = styled('input')({
 const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
 
     const [image, setImage] = useState<File | null>(null);
+    const [prediction, setPrediction] = useState<string | null>(null);
 
     useEffect(() => {
         if (image) {
@@ -43,10 +44,6 @@ const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
             </div>
 
             <div className={styles.upload}>
-
-
-
-
                 <Button
                     component="label"
                     role={undefined}
@@ -70,16 +67,17 @@ const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
 
                             const data = await response.json();
                             console.log(data);
+                            setPrediction(data.label);
                         }}
                         // multiple
                         accept="image/*"
                     />
                 </Button>
 
-
+            <h2 style={{ textAlign: "center", color: "black", paddingTop: "20px" }}>
+                {prediction ? `Prediction: ${prediction}` : "No prediction yet"}
+            </h2>
             </div>
-
-
         </div>
 
     </>);

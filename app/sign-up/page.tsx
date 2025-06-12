@@ -23,6 +23,8 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
 
     const [formData, setformData] = useState({
+        firstname: "",
+        lastname: "",
         username: "",
         email: "",
         password: "",
@@ -50,7 +52,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
     const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!formData.username || !formData.email || !formData.age) {
+        if (!formData.username || !formData.email || !formData.age || !formData.password || !formData.firstname || !formData.lastname) {
             setErrorSignUp("All fields are required");
             return;
         }
@@ -96,7 +98,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                     'Content-Type': "application/json;charset=utf-8"
                 },
                 method: "POST",
-                body: JSON.stringify({ "username": formData.username, "email": formData.email, "password": formData.password, "age": formData.age }),
+                body: JSON.stringify({ "username": formData.username, "email": formData.email, "password": formData.password, "age": formData.age, "firstname": formData.firstname, "lastname": formData.lastname }),
             })
 
             if (!response.ok) {
@@ -148,6 +150,8 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                             <p>Already have an account?&nbsp;
                                 <Link href="/sign-in" style={{ textDecoration: "underline" }}>Sign In</Link>
                             </p>
+                            <TextField id="firstname" label="Firstname" variant="standard" required value={formData.firstname} onChange={(e) => setformData({ ...formData, firstname: e.target.value })} />
+                            <TextField id="lastname" label="Lastname" variant="standard" required value={formData.lastname} onChange={(e) => setformData({ ...formData, lastname: e.target.value })} />
                             <TextField id="username" label="Username" variant="standard" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
                             <TextField id="email" label="Email" variant="standard" type="email" required value={formData.email} onChange={(e) => setformData({ ...formData, email: e.target.value })} />
                             <TextField id="password" label="Password" variant="standard" required type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handlePasswordChange} InputProps={{
