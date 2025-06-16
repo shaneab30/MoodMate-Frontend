@@ -3,6 +3,8 @@ import { Alert, Avatar, Box, Button, ButtonBase, LinearProgress, Snackbar, TextF
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
 import React from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { login } from "@/redux/features/userSlice";
 
 interface ProfileProps {
 
@@ -10,8 +12,10 @@ interface ProfileProps {
 
 const Profile: FunctionComponent<ProfileProps> = () => {
 
+    const dispatch = useAppDispatch();
+
     const [open, setOpen] = useState(false);
-    
+
     const [open1, setOpen1] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -125,7 +129,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             setOpen1(true);
             setTimeout(() => {
                 setLoading(false);
-            }, 1000); // Simulate a delay for the alert to be visible
+            }, 1000);
 
 
         } catch (error: any) {
@@ -140,19 +144,57 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => {
-                setAvatarSrc(reader.result as string);
+            reader.onload = async () => {
+                // setAvatarSrc(reader.result as string);
+                const formData = new FormData();
+                formData.append('profilePicture', file);
+                formData.append('_id', user._id);
+                setLoading(true);
+                setError(null);
+                // Upload the profile picture
+                const url = "http://127.0.0.1:5000/users/upload-pfp";
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+                if (!response.ok) {
+                    setOpen(true);
+                    throw new Error("Failed to upload profile picture.");
+                }
+                const data = await response.json();
+                console.log("Profile picture uploaded:", data);
+                const newProfilePicture = data.filePath;
+
+                if (data.status) {
+                    setAvatarSrc(`http://127.0.0.1:5000/${data.filePath}`);
+                    const updatedUser = {
+                        ...user,
+                        profilePicture: newProfilePicture,
+                    };
+                    setUser(updatedUser);
+                    localStorage.removeItem("user");
+                    localStorage.setItem("user", JSON.stringify(updatedUser));
+                    dispatch(login(updatedUser));
+                }
+
+                setOpen1(true);
+                setTimeout(() => {
+                    setLoading(false);
+                    setOpen1(false);
+                }, 1000);
             };
             reader.readAsDataURL(file);
         }
     };
 
     useEffect(() => {
-        // Set the initial avatar source from the user data
-        if (user?.username) {
-            // setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}`);
+        if (user?.profilePicture) {
+            setAvatarSrc(`http://127.0.0.1:5000/${user.profilePicture}`);
+        } else if (user?.username) {
+            // Fallback to generated avatar if no profile picture
             setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);
-            // setAvatarSrc(user.username);
+        } else {
+            setAvatarSrc(undefined);
         }
     }, [user]);
 

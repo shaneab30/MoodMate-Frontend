@@ -3,4 +3,7 @@ interface UserData{
     email: string;
     username: string;
     age: string;
+    firstname: string;
+    lastname: string;
+    profilePicture: string;
 }

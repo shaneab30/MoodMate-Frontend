@@ -1,6 +1,6 @@
 'use client';
 import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar } from "@mui/material";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, use, useEffect, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from "next/link";
@@ -63,6 +63,10 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         const localUser = JSON.parse(localStorage.getItem("user")!)
         dispatch(login(localUser))
     }, [])
+
+    useEffect(() => {
+        console.log(currentUser);
+    }, [currentUser]);
 
     return (
         <AppBar position="static" className="navbar" style={{ backgroundColor: "#6D696A" }}>
@@ -193,7 +197,13 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                     {/* <Avatar alt={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}`} src="/static/images/avatar/2.jpg" /> */}
                                     <Avatar
                                         alt={currentUser?.username}
-                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`}
+                                        src={
+                                            currentUser?.profilePicture
+                                                ? `http://127.0.0.1:5000/${currentUser.profilePicture}`
+                                                : currentUser?.username
+                                                    ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`
+                                                    : undefined
+                                        }
                                     />
                                 </IconButton>
                             </Tooltip>
