@@ -190,7 +190,11 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                         {currentUser ? (
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt={currentUser.username} src="/static/images/avatar/2.jpg" />
+                                    {/* <Avatar alt={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}`} src="/static/images/avatar/2.jpg" /> */}
+                                    <Avatar
+                                        alt={currentUser?.username}
+                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`}
+                                    />
                                 </IconButton>
                             </Tooltip>
                         ) : (

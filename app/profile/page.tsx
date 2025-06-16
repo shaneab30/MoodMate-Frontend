@@ -1,13 +1,20 @@
 'use client';
-import { Avatar, Button, TextField } from "@mui/material";
+import { Alert, Avatar, Box, Button, ButtonBase, LinearProgress, Snackbar, TextField } from "@mui/material";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
+import React from "react";
 
 interface ProfileProps {
 
 }
 
 const Profile: FunctionComponent<ProfileProps> = () => {
+
+    const [open, setOpen] = useState(false);
+    
+    const [open1, setOpen1] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -72,6 +79,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     }, [refreshTrigger]);
 
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true);
         event.preventDefault();
         setError(null);
 
@@ -99,6 +107,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             });
 
             if (!response.ok) {
+                setOpen(true);
                 throw new Error("Failed to update user data.");
             }
 
@@ -113,7 +122,11 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             // Trigger refresh
             setRefreshTrigger(prev => prev + 1);
 
-            alert("Profile updated successfully!");
+            setOpen1(true);
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000); // Simulate a delay for the alert to be visible
+
 
         } catch (error: any) {
             console.error("Error updating profile:", error);
@@ -121,7 +134,42 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         }
     };
 
+    const [avatarSrc, setAvatarSrc] = React.useState<string | undefined>(undefined);
+
+    const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setAvatarSrc(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    useEffect(() => {
+        // Set the initial avatar source from the user data
+        if (user?.username) {
+            // setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}`);
+            setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);
+            // setAvatarSrc(user.username);
+        }
+    }, [user]);
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+        setOpen1(false);
+    }
+
     return (<>
+        {loading && (
+            <Box sx={{ width: '100%' }}>
+                <LinearProgress />
+            </Box>
+        )}
         <div className={styles.container}>
             <div className={styles.headerProfile}>
                 <div className={styles.title}>
@@ -135,8 +183,39 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 </div>
                 <div className={styles.contentProfile}>
                     <div className={styles.avatar}>
-                        <div ><Avatar sx={{ width: 100, height: 100 }} alt={user?.username} src="/static/images/avatar/1.jpg" /></div>
+                        <ButtonBase
+                            component="label"
+                            role={undefined}
+                            tabIndex={-1} // prevent label from tab focus
+                            aria-label="Avatar image"
+                            sx={{
+                                borderRadius: '40px',
+                                '&:has(:focus-visible)': {
+                                    outline: '2px solid',
+                                    outlineOffset: '2px',
+                                },
+                            }}
+                        >
+                            <Avatar sx={{ width: 100, height: 100 }} alt={user?.username} src={avatarSrc} />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                style={{
+                                    border: 0,
+                                    clip: 'rect(0 0 0 0)',
+                                    height: '1px',
+                                    margin: '-1px',
+                                    overflow: 'hidden',
+                                    padding: 0,
+                                    position: 'absolute',
+                                    whiteSpace: 'nowrap',
+                                    width: '1px',
+                                }}
+                                onChange={handleAvatarChange}
+                            />
+                        </ButtonBase>
                     </div>
+
                     <div className={styles.textProfile}>
                         <div style={{ fontWeight: "bold" }}>{user?.username || "Guest"} </div>
                         <div>Email: {user?.email}</div>
@@ -199,6 +278,17 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                         )}
                     </form>
                 </div>
+                <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
+                        {error}
+                    </Alert>
+                </Snackbar>
+
+                <Snackbar open={open1} autoHideDuration={100000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '500px' }}>
+                        Success!
+                    </Alert>
+                </Snackbar>
             </div>
         </div>
     </>);
