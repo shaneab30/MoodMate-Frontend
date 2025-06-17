@@ -229,7 +229,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={() => handleClickUserMenu(setting)}>
+                                <MenuItem key={setting} onClick={() => { handleClickUserMenu(setting); handleCloseUserMenu(); }}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}

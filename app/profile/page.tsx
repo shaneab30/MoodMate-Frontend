@@ -1,10 +1,11 @@
 'use client';
-import { Alert, Avatar, Box, Button, ButtonBase, LinearProgress, Snackbar, TextField } from "@mui/material";
+import { Alert, Avatar, Box, Button, ButtonBase, IconButton, InputAdornment, LinearProgress, Snackbar, TextField } from "@mui/material";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
 import React from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { login } from "@/redux/features/userSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface ProfileProps {
 
@@ -13,6 +14,8 @@ interface ProfileProps {
 const Profile: FunctionComponent<ProfileProps> = () => {
 
     const dispatch = useAppDispatch();
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const [open, setOpen] = useState(false);
 
@@ -24,7 +27,17 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     const [user, setUser] = useState<any>(null);
 
-    const [error, setError] = useState<string | null>(null);
+    // const [error, setError] = useState<string | null>(null);
+
+    const [usernameError, setUsernameError] = useState<string | null>(null);
+
+    const [emailError, setEmailError] = useState<string | null>(null);
+
+    const [passwordError, setPasswordError] = useState<string | null>(null);
+
+    const [snackbarError, setSnackbarError] = useState<string | null>(null);
+
+    const [alertInfo, setAlertInfo] = useState("");
 
     const [formData, setformData] = useState({
         firstname: "",
@@ -74,7 +87,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
                 } catch (error) {
                     console.error("Error parsing user data:", error);
-                    setError("Failed to load user data. Please try again later.");
+                    setSnackbarError("Failed to load user data. Please try again later.");
                 }
                 console.log("User data loaded:", parsedUser);
             }
@@ -82,17 +95,83 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         fetchData();
     }, [refreshTrigger]);
 
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setformData({ ...formData, password: event.target.value });
+    }
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         event.preventDefault();
-        setError(null);
+        setSnackbarError(null);
+        setUsernameError(null);
+        setPasswordError(null);
+        setEmailError(null);
 
-        if (!formData.firstname || !formData.lastname || !formData.age || !formData.username) {
-            setError("All fields are required");
-            return;
+        let hasError = false;
+        let errorMessages = [];
+
+        if (formData.password.length < 6) {
+            setPasswordError("Password must be at least 6 characters long");
+            setSnackbarError("Password must be at least 6 characters long");
+            errorMessages.push("Password must be at least 6 characters long");
+            hasError = true;
         }
 
+
+
         try {
+            // Check if username exists
+            const urlCheck = "http://127.0.0.1:5000/users";
+            const responseCheck = await fetch(urlCheck, {
+                headers: {
+                    'Accept': "application/json, text/plain, */*",
+                    'Content-Type': "application/json;charset=utf-8"
+                },
+                method: "GET",
+            });
+
+            if (!responseCheck.ok) {
+                throw new Error("Failed to fetch user data.");
+            }
+
+            const data = await responseCheck.json();
+            // Fix: Compare username and make sure it's not the current user's ID
+            const usernameExists = data.data.find((u: any) =>
+                u.username === formData.username && u._id !== user._id
+            );
+
+            const emailExists = data.data.find((u: any) => 
+                // console.log(u._id, user._id);
+                u.email === formData.email && u._id !== user._id
+            );
+            
+            if (usernameExists) {
+                setUsernameError("Username already exists");
+                errorMessages.push("Username already exists");
+                hasError = true;
+            }
+
+            if (emailExists) {
+                setEmailError("Email already exists");
+                errorMessages.push("Email already exists");
+                hasError = true;
+            }
+
+            if (hasError) {
+                setLoading(false);
+                setSnackbarError(errorMessages.join(", "));
+                setOpen(true);
+                setLoading(false);
+                return;
+            }
+
+            // If username is unique, proceed with update
             const url = "http://127.0.0.1:5000/users/" + user._id;
             const response = await fetch(url, {
                 method: "PUT",
@@ -115,26 +194,23 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 throw new Error("Failed to update user data.");
             }
 
-            localStorage.setItem(
-                "user",
-                JSON.stringify({
-                    ...user,
-                    ...formData,
-                })
-            );
-
-            // Trigger refresh
+            // Update local storage and state
+            const updatedUser = {
+                ...user,
+                ...formData,
+            };
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+            dispatch(login(updatedUser)); // Update Redux state
             setRefreshTrigger(prev => prev + 1);
-
             setOpen1(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000);
-
 
         } catch (error: any) {
             console.error("Error updating profile:", error);
-            setError(error.message || "Failed to update profile. Please try again later.");
+            setSnackbarError(error.message || "Failed to update profile. Please try again later.");
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         }
     };
 
@@ -150,7 +226,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 formData.append('profilePicture', file);
                 formData.append('_id', user._id);
                 setLoading(true);
-                setError(null);
+                setSnackbarError(null);
                 // Upload the profile picture
                 const url = "http://127.0.0.1:5000/users/upload-pfp";
                 const response = await fetch(url, {
@@ -286,16 +362,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             required
                         />
                         <TextField
-                            id="username"
-                            label="Username"
-                            variant="standard"
-                            fullWidth
-                            value={formData.username}
-                            onChange={(e) => setformData({ ...formData, username: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                        />
-                        <TextField
                             id="age"
                             label="Age"
                             variant="standard"
@@ -305,6 +371,59 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             InputLabelProps={{ shrink: true }}
                             required
                         />
+                        <TextField
+                            id="username"
+                            label="Username"
+                            variant="standard"
+                            fullWidth
+                            value={formData.username}
+                            onChange={(e) => setformData({ ...formData, username: e.target.value })}
+                            InputLabelProps={{ shrink: true }}
+                            required
+                            error={!!usernameError}
+                            helperText={usernameError}
+                        />
+                        <TextField
+                            id="email"
+                            label="Email"
+                            variant="standard"
+                            fullWidth
+                            value={formData.email}
+                            onChange={(e) => setformData({ ...formData, email: e.target.value })}
+                            InputLabelProps={{ shrink: true }}
+                            required
+                            type="email"
+                            error={!!emailError}
+                            helperText={emailError}
+                        />
+                        <TextField
+                            id="password"
+                            label="Password"
+                            variant="standard"
+                            fullWidth
+                            value={formData.password}
+                            onChange={(e) => { setformData({ ...formData, password: e.target.value }); handlePasswordChange(e as React.ChangeEvent<HTMLInputElement>); }}
+                            InputLabelProps={{ shrink: true }}
+                            required
+                            type={showPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            style={{ paddingRight: "20px" }}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={!!passwordError}
+                            helperText={passwordError}
+                        />
                         <Button
                             type="submit"
                             variant="contained"
@@ -313,16 +432,16 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                         >
                             Update Profile
                         </Button>
-                        {error && (
+                        {/* {error && (
                             <div style={{ color: 'red', marginTop: '10px' }}>
                                 {error}
                             </div>
-                        )}
+                        )} */}
                     </form>
                 </div>
                 <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
-                        {error}
+                        {snackbarError}
                     </Alert>
                 </Snackbar>
 
