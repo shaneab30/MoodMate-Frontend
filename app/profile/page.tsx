@@ -27,8 +27,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     const [user, setUser] = useState<any>(null);
 
-    // const [error, setError] = useState<string | null>(null);
-
     const [usernameError, setUsernameError] = useState<string | null>(null);
 
     const [emailError, setEmailError] = useState<string | null>(null);
@@ -36,8 +34,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     const [passwordError, setPasswordError] = useState<string | null>(null);
 
     const [snackbarError, setSnackbarError] = useState<string | null>(null);
-
-    const [alertInfo, setAlertInfo] = useState("");
 
     const [formData, setformData] = useState({
         firstname: "",
@@ -228,7 +224,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 setLoading(true);
                 setSnackbarError(null);
                 // Upload the profile picture
-                const url = "http://127.0.0.1:5000/users/upload-pfp";
+                const url ="http://127.0.0.1:5000/users/" + user._id + "/profile-picture";
                 const response = await fetch(url, {
                     method: "POST",
                     body: formData

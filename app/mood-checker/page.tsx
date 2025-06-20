@@ -21,10 +21,12 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
+
 const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
 
     const [image, setImage] = useState<File | null>(null);
     const [prediction, setPrediction] = useState<string | null>(null);
+    const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
         if (image) {
@@ -32,6 +34,59 @@ const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+        } else {
+            console.log("No user data found");
+        }
+    }, []);
+
+    const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            setImage(event.target.files![0]);
+            console.log(event.target.files)
+            const url = "http://127.0.0.1:5000/upload"
+            const formData = new FormData();
+            formData.append('file', event.target.files![0]);
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log(data);
+            setPrediction(data.label);
+            postEmotion(data.label);
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        }
+    };
+
+    const postEmotion = async (emotion: string) => {
+        try {
+            // console.log(user.username);
+            const url = "http://127.0.0.1:5000/emotions";
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: user.username,
+                    date : new Date().toISOString(),
+                    emotion: emotion
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error("Error posting emotion:", error);
+        }
+    };
 
     return (<>
         <div className={styles.container}>
@@ -54,29 +109,15 @@ const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
                     Upload Image
                     <VisuallyHiddenInput
                         type="file"
-                        onChange={async (event) => {
-                            setImage(event.target.files![0]);
-                            console.log(event.target.files)
-                            const url = "http://127.0.0.1:5000/upload"
-                            const formData = new FormData();
-                            formData.append('file', event.target.files![0]);
-                            const response = await fetch(url, {
-                                method: "POST",
-                                body: formData
-                            });
-
-                            const data = await response.json();
-                            console.log(data);
-                            setPrediction(data.label);
-                        }}
+                        onChange={uploadImage}
                         // multiple
                         accept="image/*"
                     />
                 </Button>
 
-            <h2 style={{ textAlign: "center", color: "black", paddingTop: "20px" }}>
-                {prediction ? `Prediction: ${prediction}` : "No prediction yet"}
-            </h2>
+                <h2 style={{ textAlign: "center", color: "black", paddingTop: "20px" }}>
+                    {prediction ? `Prediction: ${prediction}` : "No prediction yet"}
+                </h2>
             </div>
         </div>
 
