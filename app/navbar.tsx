@@ -18,7 +18,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const pagesBeforeLogin = ['Home', 'Articles'];
-    const pagesAfterLogin = ['Home', 'Articles', 'Mood Checker'];
+    const pagesAfterLogin = ['Home', 'Articles', 'Expression Checker', 'Mood Tracker'];
     const settings = ['Profile', 'Account Settings', 'Logout'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);

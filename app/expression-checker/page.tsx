@@ -22,7 +22,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
+const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
 
     const [image, setImage] = useState<File | null>(null);
     const [prediction, setPrediction] = useState<string | null>(null);
@@ -124,4 +124,4 @@ const MoodChecker: FunctionComponent<MoodCheckerProps> = () => {
     </>);
 }
 
-export default MoodChecker;
+export default ExpressionChecker;
