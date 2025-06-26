@@ -1,23 +1,57 @@
 'use client';
 import { FunctionComponent } from "react";
 import ExpressionResultPieChart from "@/components/ExpressionResultPieChart";
+import { Button, ButtonGroup } from "@mui/material";
+import styles from "./page.module.css";
 
 interface MoodTrackerProps {
-    
+
 }
- 
+
 const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
-    return ( <>
-    <h1 style={{ textAlign: 'center', color: 'black', fontSize: '50px', padding: '20px'}}>Mood Tracker</h1>
-    <p style={{ textAlign: 'center', color: 'black', fontSize: '20px', padding: '20px'}}>
-        Last 7 days of your expression tracking results.
-    </p>
-    <ExpressionResultPieChart />
-    <p style={{ textAlign: 'center', color: 'black', fontSize: '20px', padding: '20px'}}>
-        This chart visualizes the emotions you've tracked over the past week.
-    </p>
-    
-    </> );
+    return (<>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Mood Tracker</h1>
+            <div className={styles.row}>
+                <div className={styles.column}>
+                    <p className={styles.description}>
+                        Last 7 days of your expression tracking results.
+                    </p>
+                    <ExpressionResultPieChart />
+                    <p className={styles.description}>
+                        This chart visualizes the emotions you've tracked over the past week.
+                    </p>
+                </div>
+                <div className={styles.column}>
+                    <p className={styles.description}>
+                        How are you feeling today?
+                    </p>
+                    <ButtonGroup
+                        variant="text"
+                        aria-label="Mood button group"
+                        sx={{
+                            gap: 2, // spacing between buttons (theme spacing units)
+                            '& .MuiButton-root': {
+                                fontSize: '3rem', // make emojis big
+                                minWidth: '64px', // optional: make buttons rounder
+                                padding: '12px',
+                                borderRadius: '50%',
+                                lineHeight: 1,
+                            },
+                        }}
+                    >
+                        <Button>☹️</Button>
+                        <Button>🙁</Button>
+                        <Button>😐</Button>
+                        <Button>🙂</Button>
+                        <Button>😃</Button>
+                    </ButtonGroup>
+                    <Button variant="text">Text</Button>
+                </div>
+            </div>
+        </div>
+
+    </>);
 }
- 
+
 export default MoodTracker;
