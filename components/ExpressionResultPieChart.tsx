@@ -60,7 +60,13 @@ const EmotionPieChart = () => {
 
                 filtered.sort((a: EmotionRecord, b: EmotionRecord) => new Date(a.date).getTime() - new Date(b.date).getTime());
                 console.log("Filtered Emotions:", filtered);
-                setEmotions(filtered);
+                if (filtered.length === 0) {
+                    console.log("No emotions found for the last 7 days.");
+                    setEmotions([]);
+                } else {
+                    setEmotions(filtered);
+                }
+                
 
             } catch (error) {
                 console.error("Error fetching emotions:", error);
@@ -115,6 +121,12 @@ const EmotionPieChart = () => {
             <Box sx={{ width: '100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
                 <CircularProgress />
             </Box>
+        );
+    }
+
+    if (emotions.length === 0) {
+        return (
+            <h2 style={{ textAlign: 'center', marginTop: '2rem' , color: 'black', height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>No emotions found for the last 7 days.</h2>
         );
     }
 

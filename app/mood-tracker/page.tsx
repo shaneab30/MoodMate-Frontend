@@ -9,6 +9,18 @@ interface MoodTrackerProps {
 }
 
 const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
+
+    const submitMood = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const response = await fetch('/api/mood-tracker', {
+            method: 'POST',
+            body: formData,
+        });
+        const data = await response.json();
+        console.log(data);
+    };
+
     return (<>
         <div className={styles.container}>
             <h1 className={styles.title}>Mood Tracker</h1>
@@ -37,6 +49,11 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
                                 padding: '12px',
                                 borderRadius: '50%',
                                 lineHeight: 1,
+                                backgroundColor: 'lightgray',
+                                '&:hover': {
+                                    backgroundColor: 'gray',
+                                },
+                                border: 'none',
                             },
                         }}
                     >
@@ -46,7 +63,6 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
                         <Button>🙂</Button>
                         <Button>😃</Button>
                     </ButtonGroup>
-                    <Button variant="text">Text</Button>
                 </div>
             </div>
         </div>
