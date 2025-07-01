@@ -5,6 +5,8 @@ import { Button, ButtonGroup } from "@mui/material";
 import styles from "./page.module.css";
 import HappinessGauge from "@/components/HappinessGauge";
 import { Grid, Box } from '@mui/material';
+import { Calendar } from "@fullcalendar/core/index.js";
+import CalendarTracker from "@/components/CalendarTracker";
 
 interface MoodTrackerProps {
 
@@ -105,6 +107,9 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
                             </p>
                         )}
                     </Box>
+                </Grid>
+                <Grid item xs={12} md={8}>
+                    <CalendarTracker />
                 </Grid>
             </Grid>
 
