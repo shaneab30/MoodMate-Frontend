@@ -1,11 +1,7 @@
-// components/CalendarTracker.tsx
 'use client';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useEffect, useState } from 'react';
-// import '@fullcalendar/core/index.css';
-// import '@fullcalendar/daygrid/index.css';
-
 
 interface HappinessRecord {
     _id: string;
