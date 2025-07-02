@@ -1,5 +1,4 @@
 .container {
-  color: black;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -7,34 +6,33 @@
   min-height: 80vh;
   height: 100%;
   width: 100%;
-  min-width: 100vh;
-  padding: 50px;
+  padding: 100px;
+  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #dbeafe 100%);
+  gap: 40px; /* Add this for controlled spacing */
 }
-
-/* .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-family: var(--font-mono);
-  margin: 10px;
-} */
 
 .title {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 150px;
+  margin: 0 0 0 40px; /* Reduce margin */
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #9333ea 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.1;
 }
 
-.image{
+.image {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  margin: 115px;
+  width: 80%;
+  margin: 0 40px 0 0; /* Reduce margin */
 }
-
 /* .introContainer {
   min-height: 100vh;
   padding-left: 20px;
@@ -49,13 +47,16 @@
 .intro {
   min-height: 90vh;
   color: black;
-  padding: 80px;
+  padding: 80px 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   font-family: var(--font-mono);
   gap: 60px;
+  background: linear-gradient(50deg, rgba(243, 232, 255, 0.95) 0%, rgba(252, 231, 243, 0.95) 50%, rgba(219, 234, 254, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .introTitle {
@@ -67,7 +68,26 @@
   font-family: var(--font-mono);
 }
 
-.introDesc{
+.underlineGradient {
+  position: relative;
+  display: inline-block;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #232946;
+  text-align: center;
+}
+
+.underlineGradient::after {
+  content: "";
+  display: block;
+  margin: 0.5rem auto 0 auto;
+  width: 40%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #9333ea 0%, #ec4899 100%);
+}
+
+.introDesc {
   padding-left: 80px;
   text-align: justify;
   display: flex;
@@ -76,7 +96,7 @@
   font-family: var(--font-mono);
 }
 
-.cardsContainer{
+.cardsContainer {
   min-height: 100vh;
   padding: 20px;
   color: black;
@@ -84,9 +104,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px;
   font-family: var(--font-mono);
+  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #dbeafe 100%);
 }
+
 .cards {
   padding: 20px;
   gap: 30px;
@@ -98,7 +119,7 @@
   font-family: var(--font-mono);
 }
 
-.card{
+.card {
   padding: 20px;
   width: 350px;
   display: flex;
@@ -117,6 +138,7 @@
   height: 200px;
   font-family: var(--font-mono);
 }
+
 /* .main {
   display: flex;
   flex-direction: column;

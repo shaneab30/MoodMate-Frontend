@@ -34,11 +34,9 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
   return (
     <>
       <div className={styles.container}>
-        {/* <div className={styles.header}> */}
         <div className={styles.title}>
           <h1>Welcome to MoodMate</h1>
-          <h2>Your Mental Health</h2>
-          <h3>Companian</h3>
+          <h2>Your Mental Health Companian</h2>
         </div>
         <div className={styles.image}>
           <img
@@ -48,9 +46,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
             height={320}
             style={{ borderRadius: "20px" }} />
         </div>
-        {/* </div> */}
       </div>
-      {/* <div className={styles.introContainer}> */}
       <div className={styles.intro}>
         <div className={styles.introDesc}>
           <p>
@@ -62,12 +58,11 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
           </p>
         </div>
         <div className={styles.introTitle}>
-          <h1>What is MoodMate?</h1>
+          <h1 className={styles.underlineGradient}>What is MoodMate?</h1>
         </div>
       </div>
-      {/* </div> */}
       <div className={styles.cardsContainer}>
-        <h1 style={{ padding: "20px" }}>Why is Your Mental Health Important?</h1>
+          <h1 className={styles.underlineGradient}>Why is Your Mental Health Important?</h1>
         <div className={styles.cards}>
           <div className={styles.card} style={{ backgroundColor: "#E2DADB" }}>
             <img

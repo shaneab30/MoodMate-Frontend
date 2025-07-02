@@ -69,7 +69,22 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     }, [currentUser]);
 
     return (
-        <AppBar position="static" className="navbar" style={{ backgroundColor: "#6D696A" }}>
+        // <AppBar
+        //     position="static"
+        //     className="navbar"
+        //     style={{
+        //         background: "linear-gradient(135deg,rgb(141, 34, 255) 0%,rgb(255, 123, 198) 50%,rgb(45, 136, 255) 100%)",
+        //         boxShadow: "none"
+        //     }}
+        // >
+        <AppBar
+            position="static"
+            className="navbar"
+            style={{
+                background: "rgb(178, 105, 255)",
+                boxShadow: "none"
+            }}
+        >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>

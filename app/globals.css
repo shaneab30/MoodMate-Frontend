@@ -107,7 +107,7 @@ p {
   font-family: 'Montserrat', sans-serif !important;
 }
 
-body {
+/* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -116,6 +116,16 @@ body {
     )
     rgb(var(--background-start-rgb));
     font-family: 'Montserrat', sans-serif;
+} */
+
+body {
+  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #dbeafe 100%);
+  font-family: 'Montserrat', sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
+  color: #232946; /* or your preferred text color */
+  padding: 0;
+  margin: 0;
 }
 
 a {

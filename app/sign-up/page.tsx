@@ -190,7 +190,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                         </div>
                         <div className={styles.image}>
                             <img
-                                src="https://imgur.com/1OpAhUn.png"
+                                src="https://imgur.com/Aisv6mt.png"
                                 alt="image1"
                                 width={450}
                                 height={320}

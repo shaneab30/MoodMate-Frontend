@@ -1,14 +1,14 @@
 .bgImage {
-    position: absolute; 
+    /* position: absolute;  */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; 
-    background-image: url("https://imgur.com/bXKCNrD.png");
+    height: 80vh; 
+    /* background-image: url("https://imgur.com/bXKCNrD.png");
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center; 
-    z-index: -1; 
+    z-index: -1;  */
 }
 
 .outercontainer {
@@ -21,7 +21,8 @@
 }
 
 .container{
-    background-color: whitesmoke;
+    background-color: rgb(244, 232, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .25);
     display: flex;
     flex-direction: column;
     width: 60vh;

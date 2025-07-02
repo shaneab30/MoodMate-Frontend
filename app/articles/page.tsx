@@ -19,7 +19,7 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.title}>
-                    <h1 style={{ color: "black" }}>Articles Page</h1>
+                    <h1>Articles Page</h1>
                 </div>
             </div>
             <div className={styles.content}>
