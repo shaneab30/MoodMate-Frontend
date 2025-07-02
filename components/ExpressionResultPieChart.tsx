@@ -130,7 +130,7 @@ const EmotionPieChart = () => {
         );
     }
 
-    return <ReactECharts option={option} style={{ height: 300, width: '100%' }} />;
+    return <ReactECharts option={option} style={{ height: 250, width: '100%' }} />;
 };
 
 export default EmotionPieChart;

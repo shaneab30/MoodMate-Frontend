@@ -46,13 +46,11 @@ const CalendarTracker = () => {
                 allDay: true,
             }));
 
-            const emotionsMapped = happinessMapped.concat(
-                emotionFiltered.map((record: EmotionRecord) => ({
-                    title: `${record.emotion}`,
-                    date: record.date.slice(0, 10),
-                    allDay: true,
-                }))
-            )
+            const emotionsMapped = emotionFiltered.map((record: EmotionRecord) => ({
+                title: `${record.emotion}`,
+                date: record.date.slice(0, 10),
+                allDay: true,
+            }));
 
             const combined = [...happinessMapped, ...emotionsMapped];
             setEvents(combined);

@@ -11,21 +11,15 @@ interface HappinessRecord {
     level: string;
 }
 
-const HappinessGauge = () => {
+const HappinessGauge= ({ refresh }: { refresh: boolean }) => {
     const [user, setUser] = useState<any>(null);
     const [happiness, setHappiness] = useState<HappinessRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const countHappiness = (records: HappinessRecord[]) => {
-        const counts: Record<string, number> = {};
+    useEffect(() => {
+        fetchHappiness();
+    }, [refresh]);
 
-        records.forEach((record) => {
-            const level = record.level.toLowerCase();
-            counts[level] = (counts[level] || 0) + 1;
-        });
-
-        return Object.entries(counts).map(([name, value]) => ({ name, value }));
-    };
 
     const fetchHappiness = async () => {
         setLoading(true);
@@ -93,7 +87,7 @@ const HappinessGauge = () => {
                     show: false
                 },
                 splitLine: {
-                    length: 10,
+                    length: 6,
                     lineStyle: {
                         width: 1,
                         color: '#999'
@@ -102,14 +96,14 @@ const HappinessGauge = () => {
                 axisLabel: {
                     distance: 12,
                     color: '#999',
-                    fontSize: 10
+                    fontSize: 8
                 },
                 anchor: {
                     show: true,
                     showAbove: true,
                     size: 15,
                     itemStyle: {
-                        borderWidth: 10
+                        borderWidth: 8
                     }
                 },
                 title: {
@@ -147,7 +141,7 @@ const HappinessGauge = () => {
             alignItems="center"
             mt={4}
         >
-            <ReactECharts option={option} style={{ height: 300, width: 300 }} />
+            <ReactECharts option={option} style={{ height: 250, width: 300 }} />
             <p style={{ fontWeight: 'bold', fontSize: '24px', marginTop: '0px', color: 'black' }}>
                 Happiness Meter
             </p>

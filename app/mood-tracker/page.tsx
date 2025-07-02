@@ -18,6 +18,8 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
 
     const [submittedToday, setSubmittedToday] = useState(false);
 
+    const [refreshGauge, setRefreshGauge] = useState(false);
+
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
@@ -54,6 +56,9 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
             const data = await response.json();
             console.log(data);
             localStorage.setItem('lastHappinessSubmit', today);
+            setSubmittedToday(true);
+            setRefreshGauge(r => !r); 
+            
         } catch (error) {
             console.log(error);
         }
@@ -72,7 +77,7 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
                         <p className={styles.description}>
                             This chart visualizes the emotions you've tracked over the past week.
                         </p>
-                        <HappinessGauge />
+                        <HappinessGauge refresh={refreshGauge}/>
                         <p className={styles.description}>
                             How are you feeling today?
                         </p>
