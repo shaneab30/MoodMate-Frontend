@@ -1,11 +1,9 @@
 'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
-import { FunctionComponent, useEffect, useState } from "react";
-import { loadEnvFile } from "process";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import LinearProgress from "@mui/material/LinearProgress/LinearProgress";
-import Box from "@mui/material/Box/Box";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
+import { motion, LazyMotion, domAnimation } from "motion/react";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 interface HomePageProps {
 
@@ -15,54 +13,104 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 750);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  const introDescRef = useRef<HTMLDivElement>(null);
 
-  // if (loading) {
-  //   return (
-  //     <Box sx={{ width: '100%' }}>
-  //       <LinearProgress />
-  //     </Box>
-  //   );
-  // }
+  const [showTextEffect, setShowTextEffect] = useState(false);
 
+  const words =
+    "At MoodMate, we understand the importance of mental well-being in achieving a balanced and fulfilling life. That’s why we’ve created a trusted platform to guide you through your mental health journey. " +
+    "Whether you're seeking support, tools to manage stress, or a space to reflect, MoodMate is here to help. Our personalized resources, mood tracking, and expert advice are designed to empower you every step of the way. " +
+    "Discover a safe space for self-care, growth, and connection. With MoodMate, you’re never alone. Let’s take care of your mental health—together.";
+
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setShowTextEffect(true);
+          observer.disconnect();
+        }
+      }, { threshold: 0.5 });
+    });
+
+    if (introDescRef.current) {
+      observer.observe(introDescRef.current);
+    }
+  }, []);
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.title}>
-          <h1>Welcome to MoodMate</h1>
-          <h2>Your Mental Health Companian</h2>
+          <LazyMotion features={domAnimation}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center"
+            >
+              <h1
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: 800,
+                  background: "linear-gradient(90deg, #a855f7 0%, #ec4899 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  lineHeight: 1.1,
+                  margin: 0,
+                }}
+              >
+                Welcome to MoodMate
+              </h1>
+              <motion.h3
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  background: "linear-gradient(90deg, #a855f7 0%, #ec4899 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  lineHeight: 1.1,
+                  margin: 0,
+                }}
+              >
+                Your Mental Health Companion
+              </motion.h3>
+            </motion.div>
+          </LazyMotion>
         </div>
-        <div className={styles.image}>
-          <img
+        <LazyMotion features={domAnimation}>
+          <motion.img
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
             src="https://imgur.com/Aisv6mt.png"
-            alt="image1"
+            alt="hero"
             width={450}
             height={320}
-            style={{ borderRadius: "20px" }} />
-        </div>
+            style={{ borderRadius: "20px", marginTop: "2rem" }}
+          />
+        </LazyMotion>
       </div>
+
       <div className={styles.intro}>
         <div className={styles.introDesc}>
-          <p>
-            At MoodMate, we understand the importance of mental well-being in achieving a balanced and fulfilling life. That’s why we’ve created a trusted platform to guide you through your mental health journey.
 
-            Whether you're seeking support, tools to manage stress, or a space to reflect, MoodMate is here to help. Our personalized resources, mood tracking, and expert advice are designed to empower you every step of the way.
+          <TextGenerateEffect words={words} duration={0.5} />
 
-            Discover a safe space for self-care, growth, and connection. With MoodMate, you’re never alone. Let’s take care of your mental health—together.
-          </p>
         </div>
         <div className={styles.introTitle}>
           <h1 className={styles.underlineGradient}>What is MoodMate?</h1>
         </div>
       </div>
       <div className={styles.cardsContainer}>
-          <h1 className={styles.underlineGradient}>Why is Your Mental Health Important?</h1>
+        <h1 className={styles.underlineGradient}>Why is Your Mental Health Important?</h1>
         <div className={styles.cards}>
           <div className={styles.card} style={{ backgroundColor: "#E2DADB" }}>
             <img

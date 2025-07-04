@@ -8,6 +8,8 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { login, logout } from "@/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Logout } from "@mui/icons-material";
+import { LogOut, User } from "lucide-react";
 
 interface NavBarProps {
 
@@ -19,7 +21,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     const dispatch = useAppDispatch();
     const pagesBeforeLogin = ['Home', 'Articles'];
     const pagesAfterLogin = ['Home', 'Articles', 'Expression Checker', 'Mood Tracker'];
-    const settings = ['Profile', 'Account Settings', 'Logout'];
+    const settings = [{ label: 'Profile', icon: <User size={16} /> }, { label: 'Logout', icon: <LogOut size={16} /> }];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -103,7 +105,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                             sx={{
                                 mr: 2,
                                 fontWeight: 700,
-                                letterSpacing: '.2rem',
+                                letterSpacing: '.1rem',
                                 color: 'inherit',
                                 textDecoration: 'none',
                             }}
@@ -243,11 +245,13 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={() => { handleClickUserMenu(setting); handleCloseUserMenu(); }}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                            {settings.map(({ label, icon }) => (
+                                <MenuItem key={label} onClick={() => { handleClickUserMenu(label); handleCloseUserMenu(); }}>
+                                    {icon}
+                                    <Typography textAlign="center" sx={{ ml: 1 }}>{label}</Typography>
                                 </MenuItem>
                             ))}
+
                         </Menu>
                     </Box>
                 </Toolbar>

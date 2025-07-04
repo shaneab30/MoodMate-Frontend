@@ -87,10 +87,10 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
                             sx={{
                                 gap: 2, // spacing between buttons (theme spacing units)
                                 '& .MuiButton-root': {
-                                    fontSize: '3rem', // make emojis big
-                                    minWidth: '64px', // optional: make buttons rounder
+                                    fontSize: '2rem', // make emojis big
+                                    minWidth: '40px', // optional: make buttons rounder
                                     padding: '12px',
-                                    borderRadius: '50%',
+                                    borderRadius: '55%',
                                     lineHeight: 1,
                                     backgroundColor: 'lightgray',
                                     '&:hover': {
