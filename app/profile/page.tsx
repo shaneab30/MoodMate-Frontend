@@ -84,7 +84,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                     const data = await responseCheck.json();
                     userExists = data.data.find((user: any) => user._id === userId);
                     if (userExists) {
-                        console.log("User exists:", userExists);
+                        // console.log("User exists:", userExists);
 
                         setUser(userExists);
                         setformData({
@@ -101,7 +101,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                     console.error("Error parsing user data:", error);
                     setSnackbarError("Failed to load user data. Please try again later.");
                 }
-                console.log("User data loaded:", parsedUser);
+                // console.log("User data loaded:", parsedUser);
             }
         };
         fetchData();
@@ -250,7 +250,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                     throw new Error("Failed to upload profile picture.");
                 }
                 const data = await response.json();
-                console.log("Profile picture uploaded:", data);
+                // console.log("Profile picture uploaded:", data);
                 const newProfilePicture = data.filePath;
 
                 if (data.status) {

@@ -108,7 +108,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
 
             const postUsersJson = await response.json()
-            console.log("Sign up success", postUsersJson)
+            // console.log("Sign up success", postUsersJson)
 
             setOpen1(true);
             setTimeout(() => {

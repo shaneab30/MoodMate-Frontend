@@ -70,7 +70,7 @@ const MoodTracker: FunctionComponent<MoodTrackerProps> = () => {
             })
             const today = new Date().toISOString().slice(0, 10);
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             localStorage.setItem('lastHappinessSubmit', today);
             setSubmittedToday(true);
             setRefreshGauge(r => !r); 

@@ -42,11 +42,11 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
         return null; // or a loading spinner
     }
 
-    useEffect(() => {
-        if (image) {
-            console.log(image);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (image) {
+    //         // console.log(image);
+    //     }
+    // }, []);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -61,7 +61,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
         try {
             setImage(event.target.files![0]);
-            console.log(event.target.files)
+            // console.log(event.target.files)
             const url = "http://54.169.29.154:5000//upload"
             const formData = new FormData();
             formData.append('file', event.target.files![0]);
@@ -71,7 +71,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
             });
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             setPrediction(data.label);
             postEmotion(data.label);
         } catch (error) {
@@ -96,7 +96,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
             });
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.error("Error posting emotion:", error);
         }

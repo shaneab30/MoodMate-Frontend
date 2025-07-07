@@ -61,13 +61,13 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     }
 
     useEffect(() => {
-        console.log(JSON.parse(localStorage.getItem("user")!))
+        // console.log(JSON.parse(localStorage.getItem("user")!))
         const localUser = JSON.parse(localStorage.getItem("user")!)
         dispatch(login(localUser))
     }, [])
 
     useEffect(() => {
-        console.log(currentUser);
+        // console.log(currentUser);
     }, [currentUser]);
 
     return (
