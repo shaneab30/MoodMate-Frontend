@@ -4,6 +4,8 @@ import { Component, FunctionComponent, use, useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Image from 'next/image';
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
 
 interface MoodCheckerProps {
 
@@ -27,6 +29,18 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     const [image, setImage] = useState<File | null>(null);
     const [prediction, setPrediction] = useState<string | null>(null);
     const [user, setUser] = useState<any>(null);
+    const router = useRouter();
+    const currentUser = useAppSelector((state) => state.user.currentUser);
+
+    useEffect(() => {
+        if (!currentUser) {
+            router.push('/sign-in');
+        }
+    }, [currentUser]);
+
+    if (!currentUser) {
+        return null; // or a loading spinner
+    }
 
     useEffect(() => {
         if (image) {
@@ -48,7 +62,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
         try {
             setImage(event.target.files![0]);
             console.log(event.target.files)
-            const url = "http://127.0.0.1:5000/upload"
+            const url = "http://54.169.29.154:5000//upload"
             const formData = new FormData();
             formData.append('file', event.target.files![0]);
             const response = await fetch(url, {
@@ -68,7 +82,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     const postEmotion = async (emotion: string) => {
         try {
             // console.log(user.username);
-            const url = "http://127.0.0.1:5000/emotions";
+            const url = "http://54.169.29.154:5000//emotions";
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -76,7 +90,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
                 },
                 body: JSON.stringify({
                     username: user.username,
-                    date : new Date().toISOString(),
+                    date: new Date().toISOString(),
                     emotion: emotion
                 })
             });

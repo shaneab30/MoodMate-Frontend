@@ -26,10 +26,10 @@ const CalendarTracker = () => {
             if (!storedUser) return;
 
             const user = JSON.parse(storedUser);
-            const happinessResponse = await fetch("http://127.0.0.1:5000/happiness");
+            const happinessResponse = await fetch("http://54.169.29.154:5000/happiness");
             const happinessData = await happinessResponse.json();
 
-            const emotionResponse = await fetch("http://127.0.0.1:5000/emotions");
+            const emotionResponse = await fetch("http://54.169.29.154:5000/emotions");
             const emotionData = await emotionResponse.json();
 
             const happinessFiltered = happinessData.data.filter(

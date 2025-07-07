@@ -69,7 +69,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             setLoading(true);
 
             // Check User Already exists
-            const urlCheck = "http://127.0.0.1:5000/users"
+            const urlCheck = "http://54.169.29.154:5000//users"
             const responseCheck = await fetch(urlCheck, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
@@ -91,7 +91,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
 
             //Sign up
-            const url = "http://127.0.0.1:5000/users/register"
+            const url = "http://54.169.29.154:5000//users/register"
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",

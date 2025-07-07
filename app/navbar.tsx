@@ -216,7 +216,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                         alt={currentUser?.username}
                                         src={
                                             currentUser?.profilePicture
-                                                ? `http://127.0.0.1:5000/${currentUser.profilePicture}`
+                                                ? `http://54.169.29.154:5000//${currentUser.profilePicture}`
                                                 : currentUser?.username
                                                     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`
                                                     : undefined

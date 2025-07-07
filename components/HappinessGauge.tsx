@@ -27,7 +27,7 @@ const HappinessGauge= ({ refresh }: { refresh: boolean }) => {
         setUser(localUser);
 
         try {
-            const url = "http://127.0.0.1:5000/happiness";
+            const url = "http://54.169.29.154:5000/happiness";
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",

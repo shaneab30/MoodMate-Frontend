@@ -3,9 +3,10 @@ import { Alert, Avatar, Box, Button, ButtonBase, IconButton, InputAdornment, Lin
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
 import React from "react";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from "@/redux/features/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 interface ProfileProps {
 
@@ -44,6 +45,21 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         age: "",
     });
 
+    const router = useRouter();
+    
+    const currentUser = useAppSelector((state) => state.user.currentUser);
+
+    useEffect(() => {
+        if (!currentUser) {
+            router.push('/sign-in');
+        }
+    }, [currentUser]);
+
+    if (!currentUser) {
+        return null;
+    }
+
+
     useEffect(() => {
         const fetchData = async () => {
             const savedUser = localStorage.getItem("user");
@@ -54,7 +70,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 const userId = parsedUser._id;
 
                 try {
-                    const urlCheck = "http://127.0.0.1:5000/users"
+                    const urlCheck = "http://54.169.29.154:5000//users"
                     const responseCheck = await fetch(urlCheck, {
                         headers: {
                             'Accept': "application/json, text/plain, */*",
@@ -123,7 +139,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
         try {
             // Check if username exists
-            const urlCheck = "http://127.0.0.1:5000/users";
+            const urlCheck = "http://54.169.29.154:5000//users";
             const responseCheck = await fetch(urlCheck, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
@@ -168,7 +184,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             }
 
             // If username is unique, proceed with update
-            const url = "http://127.0.0.1:5000/users/" + user._id;
+            const url = "http://54.169.29.154:5000//users/" + user._id;
             const response = await fetch(url, {
                 method: "PUT",
                 headers: {
@@ -224,7 +240,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 setLoading(true);
                 setSnackbarError(null);
                 // Upload the profile picture
-                const url ="http://127.0.0.1:5000/users/" + user._id + "/profile-picture";
+                const url ="http://54.169.29.154:5000//users/" + user._id + "/profile-picture";
                 const response = await fetch(url, {
                     method: "POST",
                     body: formData
@@ -238,7 +254,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 const newProfilePicture = data.filePath;
 
                 if (data.status) {
-                    setAvatarSrc(`http://127.0.0.1:5000/${data.filePath}`);
+                    setAvatarSrc(`http://54.169.29.154:5000//${data.filePath}`);
                     const updatedUser = {
                         ...user,
                         profilePicture: newProfilePicture,
@@ -261,7 +277,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     useEffect(() => {
         if (user?.profilePicture) {
-            setAvatarSrc(`http://127.0.0.1:5000/${user.profilePicture}`);
+            setAvatarSrc(`http://54.169.29.154:5000//${user.profilePicture}`);
         } else if (user?.username) {
             // Fallback to generated avatar if no profile picture
             setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);

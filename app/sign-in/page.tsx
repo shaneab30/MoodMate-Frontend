@@ -59,7 +59,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         setError(null);
         setLoading(true);
         try {
-            const url = "http://127.0.0.1:5000/users"
+            const url = "http://54.169.29.154:5000//users"
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
