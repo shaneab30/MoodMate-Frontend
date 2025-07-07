@@ -58,7 +58,7 @@ const EmotionPieChart = () => {
             });
 
             filtered.sort((a: EmotionRecord, b: EmotionRecord) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            console.log("Filtered Emotions:", filtered);
+            // console.log("Filtered Emotions:", filtered);
             if (filtered.length === 0) {
                 console.log("No emotions found for the last 7 days.");
                 setEmotions([]);
