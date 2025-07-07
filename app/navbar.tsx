@@ -50,11 +50,11 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                 router.push('/profile');
                 break;
             case 'Logout':
+                router.push('/sign-in');
                 dispatch(logout());
                 localStorage.removeItem("user");
                 localStorage.removeItem("lastHappinessSubmit");
                 handleCloseUserMenu();
-                router.push('/sign-in');
                 break;
             default:
                 console.log(`Handler function for ${key} not found`);

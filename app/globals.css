@@ -1,5 +1,19 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* @import "tailwindcss"; */
+:root {
+  --background: 270 100% 99%;
+  --foreground: 240 10% 3.9%;
+  --border: 240 5% 91%;
+  --card: 0 0% 100%;
+}
+
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --border: 217.2 32.6% 17.5%;
+}
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;
