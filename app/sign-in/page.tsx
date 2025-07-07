@@ -79,16 +79,16 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                 // console.log(dispatch(login(user)));
                 console.log("Login success")
                 localStorage.setItem("user", JSON.stringify(user));
-                
+
                 setOpen1(true);
                 setTimeout(() => {
                     setLoading(false);
                     router.push("/articles");
                 }, 1000);
-                
+
             } else {
                 console.log("Login failed");
-                
+
                 setTimeout(() => {
                     setOpen(true);
                     setLoading(false);
@@ -115,7 +115,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         <div className={styles.bgImage}>
             <div className={styles.outercontainer}>
                 <form onSubmit={loginUser}>
-                    <div className={styles.container}>
+                    <div className={styles.card}>
                         <h1>Sign In</h1>
                         <div className={styles.text}>
                             <TextField

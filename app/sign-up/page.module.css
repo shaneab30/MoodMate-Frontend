@@ -11,16 +11,32 @@
     align-items: center;
 }
 
-.container {
+.card {
     background-color: rgb(244, 232, 255);
+    box-shadow:
+        0 0 5px rgba(168, 85, 247, 0.2),
+        /* purple */
+        0 0 15px rgba(236, 72, 153, 0.2),
+        /* pink */
+        0 0 30px rgba(168, 85, 247, 0.2);
+    /* purple again */
     display: flex;
     flex-direction: row;
-    /* width: 78vh; */
     gap: 50px;
     margin: 20px;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+    transition: box-shadow 0.5s, transform 0.3s;
+}
+
+.card:hover {
+    box-shadow:
+        0 0 5px rgba(168, 85, 247, 0.5),
+        0 0 20px rgba(236, 72, 153, 0.4),
+        0 0 40px rgba(168, 85, 247, 0.5);
+    transform: translateY(-3px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .text {

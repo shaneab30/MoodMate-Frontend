@@ -144,7 +144,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             <div className={styles.outercontainer}>
 
                 <form onSubmit={submit}>
-                    <div className={styles.container}>
+                    <div className={styles.card}>
                         <div className={styles.text}>
                             <h1>Sign Up</h1>
                             <p>Already have an account?&nbsp;
