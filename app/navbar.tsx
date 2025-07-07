@@ -52,6 +52,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
             case 'Logout':
                 dispatch(logout());
                 localStorage.removeItem("user");
+                localStorage.removeItem("lastHappinessSubmit");
                 handleCloseUserMenu();
                 router.push('/sign-in');
                 break;
