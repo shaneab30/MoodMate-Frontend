@@ -31,6 +31,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
     const currentUser = useAppSelector((state) => state.user.currentUser);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         if (!currentUser) {
@@ -39,7 +40,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     }, [currentUser]);
 
     if (!currentUser) {
-        return null; // or a loading spinner
+        return null;
     }
 
     // useEffect(() => {
@@ -62,7 +63,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
         try {
             setImage(event.target.files![0]);
             // console.log(event.target.files)
-            const url = "http://54.169.29.154:5000//upload"
+            const url = baseUrl + "/upload"
             const formData = new FormData();
             formData.append('file', event.target.files![0]);
             const response = await fetch(url, {
@@ -82,7 +83,7 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
     const postEmotion = async (emotion: string) => {
         try {
             // console.log(user.username);
-            const url = "http://54.169.29.154:5000//emotions";
+            const url =  baseUrl + "/emotions";
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

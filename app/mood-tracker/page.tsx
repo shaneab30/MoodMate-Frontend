@@ -12,9 +12,9 @@ const MoodTracker: FunctionComponent = () => {
     const [user, setUser] = useState<any>(null);
     const [submittedToday, setSubmittedToday] = useState(false);
     const [refreshGauge, setRefreshGauge] = useState(false);
-
     const router = useRouter();
     const currentUser = useAppSelector((state) => state.user.currentUser);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     
 
@@ -39,7 +39,7 @@ const MoodTracker: FunctionComponent = () => {
 
     const postHappiness = async (level: string) => {
         try {
-            const url = "http://54.169.29.154:5000/happiness";
+            const url = baseUrl + "/happiness";
             const response = await fetch(url, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },

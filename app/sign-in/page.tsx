@@ -22,8 +22,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
     const [error, setError] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
-    // const [items, setItems] = useState([]);
-    // const currentUser = useAppSelector((state) => state.user.currentUser)
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
     const [formData, setformData] = useState({
@@ -59,7 +58,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         setError(null);
         setLoading(true);
         try {
-            const url = "http://54.169.29.154:5000//users"
+            const url = baseUrl + "/users"
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",

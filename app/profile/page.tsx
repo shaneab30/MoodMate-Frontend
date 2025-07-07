@@ -15,27 +15,16 @@ interface ProfileProps {
 const Profile: FunctionComponent<ProfileProps> = () => {
 
     const dispatch = useAppDispatch();
-
     const [showPassword, setShowPassword] = useState(false);
-
     const [open, setOpen] = useState(false);
-
     const [open1, setOpen1] = useState(false);
-
     const [loading, setLoading] = useState(false);
-
     const [refreshTrigger, setRefreshTrigger] = useState(0);
-
     const [user, setUser] = useState<any>(null);
-
     const [usernameError, setUsernameError] = useState<string | null>(null);
-
     const [emailError, setEmailError] = useState<string | null>(null);
-
     const [passwordError, setPasswordError] = useState<string | null>(null);
-
     const [snackbarError, setSnackbarError] = useState<string | null>(null);
-
     const [formData, setformData] = useState({
         firstname: "",
         lastname: "",
@@ -46,8 +35,8 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     });
 
     const router = useRouter();
-    
     const currentUser = useAppSelector((state) => state.user.currentUser);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         if (!currentUser) {
@@ -70,7 +59,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 const userId = parsedUser._id;
 
                 try {
-                    const urlCheck = "http://54.169.29.154:5000//users"
+                    const urlCheck = baseUrl + "/users"
                     const responseCheck = await fetch(urlCheck, {
                         headers: {
                             'Accept': "application/json, text/plain, */*",
@@ -139,7 +128,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
         try {
             // Check if username exists
-            const urlCheck = "http://54.169.29.154:5000//users";
+            const urlCheck = baseUrl + "/users";
             const responseCheck = await fetch(urlCheck, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
@@ -184,7 +173,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             }
 
             // If username is unique, proceed with update
-            const url = "http://54.169.29.154:5000//users/" + user._id;
+            const url = baseUrl + "/users/" + user._id;
             const response = await fetch(url, {
                 method: "PUT",
                 headers: {
@@ -240,7 +229,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 setLoading(true);
                 setSnackbarError(null);
                 // Upload the profile picture
-                const url ="http://54.169.29.154:5000//users/" + user._id + "/profile-picture";
+                const url = baseUrl + "/users/" + user._id + "/profile-picture";
                 const response = await fetch(url, {
                     method: "POST",
                     body: formData
@@ -254,7 +243,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 const newProfilePicture = data.filePath;
 
                 if (data.status) {
-                    setAvatarSrc(`http://54.169.29.154:5000//${data.filePath}`);
+                    setAvatarSrc(`${baseUrl}/${data.filePath}`);
                     const updatedUser = {
                         ...user,
                         profilePicture: newProfilePicture,
@@ -277,7 +266,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     useEffect(() => {
         if (user?.profilePicture) {
-            setAvatarSrc(`http://54.169.29.154:5000//${user.profilePicture}`);
+            setAvatarSrc(`${baseUrl}/${user.profilePicture}`);
         } else if (user?.username) {
             // Fallback to generated avatar if no profile picture
             setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);

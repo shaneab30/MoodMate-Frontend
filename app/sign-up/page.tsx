@@ -20,7 +20,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
     const router = useRouter();
-
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const [formData, setformData] = useState({
         firstname: "",
@@ -69,7 +69,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             setLoading(true);
 
             // Check User Already exists
-            const urlCheck = "http://54.169.29.154:5000//users"
+            const urlCheck = baseUrl + "/users"
             const responseCheck = await fetch(urlCheck, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
@@ -91,7 +91,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
 
             //Sign up
-            const url = "http://54.169.29.154:5000//users/register"
+            const url = baseUrl + "/users/register"
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
