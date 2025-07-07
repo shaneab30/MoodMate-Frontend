@@ -27,6 +27,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const currentUser = useAppSelector((state) => state.user.currentUser)
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -216,7 +217,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                         alt={currentUser?.username}
                                         src={
                                             currentUser?.profilePicture
-                                                ? `http://54.169.29.154:5000//${currentUser.profilePicture}`
+                                                ? `${baseUrl}/${currentUser.profilePicture}`
                                                 : currentUser?.username
                                                     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`
                                                     : undefined

@@ -19,6 +19,7 @@ interface EmotionRecord {
 
 const CalendarTracker = () => {
     const [events, setEvents] = useState<any[]>([]);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,10 +27,10 @@ const CalendarTracker = () => {
             if (!storedUser) return;
 
             const user = JSON.parse(storedUser);
-            const happinessResponse = await fetch("http://54.169.29.154:5000/happiness");
+            const happinessResponse = await fetch(baseUrl + "/happiness");
             const happinessData = await happinessResponse.json();
 
-            const emotionResponse = await fetch("http://54.169.29.154:5000/emotions");
+            const emotionResponse = await fetch(baseUrl + "/emotions");
             const emotionData = await emotionResponse.json();
 
             const happinessFiltered = happinessData.data.filter(

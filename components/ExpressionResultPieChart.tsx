@@ -16,6 +16,7 @@ const EmotionPieChart = () => {
     const [user, setUser] = useState<any>(null);
     const [emotions, setEmotions] = useState<EmotionRecord[]>([]);
     const [loading, setLoading] = useState(true);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const countEmotions = (records: EmotionRecord[]) => {
         const counts: Record<string, number> = {};
@@ -34,7 +35,7 @@ const EmotionPieChart = () => {
         setUser(localUser);
 
         try {
-            const url = "http://54.169.29.154:5000/emotions";
+            const url = baseUrl + "/emotions";
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
