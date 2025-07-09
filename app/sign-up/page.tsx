@@ -56,60 +56,44 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             setErrorSignUp("All fields are required");
             return;
         }
+
         if (formData.password.length < 6) {
-            setError("Password must be at least 6 characters long");
+            setErrorSignUp("Password must be at least 6 characters long");
             return;
         }
 
-        // setError(null);
         setalertInfo("");
-
+        setErrorSignUp(null);
+        setOpen(false);
 
         try {
             setLoading(true);
 
-            // Check User Already exists
-            const urlCheck = baseUrl + "/users"
-            const responseCheck = await fetch(urlCheck, {
+            const url = `${baseUrl}/users/register`;
+            const response = await fetch(url, {
+                method: "POST",
                 headers: {
                     'Accept': "application/json, text/plain, */*",
                     'Content-Type': "application/json;charset=utf-8"
                 },
-                method: "GET",
+                body: JSON.stringify({
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password,
+                    age: formData.age,
+                    firstname: formData.firstname,
+                    lastname: formData.lastname,
+                }),
             });
 
-            if (!responseCheck.ok) {
-                throw new Error("Failed to fetch user data.");
-            }
-            const data = await responseCheck.json();
-            const userExists = data.data.find((user: any) => user.username === formData.username);
-            if (userExists) {
-                const errorMessage = "User already exists";
-                setErrorSignUp(errorMessage);
-                throw new Error(errorMessage);
+            const result = await response.json();
+
+            if (!response.ok || result?.status === false) {
+                const msg = result?.message || "An error occurred during registration.";
+                throw new Error(msg);
             }
 
-
-            //Sign up
-            const url = baseUrl + "/users/register"
-            const response = await fetch(url, {
-                headers: {
-                    'Accept': "application/json, text/plain, */*",
-                    'Content-Type': "application/json;charset=utf-8"
-                },
-                method: "POST",
-                body: JSON.stringify({ "username": formData.username, "email": formData.email, "password": formData.password, "age": formData.age, "firstname": formData.firstname, "lastname": formData.lastname }),
-            })
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch user data.");
-            }
-
-
-
-            const postUsersJson = await response.json()
-            // console.log("Sign up success", postUsersJson)
-
+            // Success!
             setOpen1(true);
             setTimeout(() => {
                 setLoading(false);
@@ -117,22 +101,16 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
             }, 1000);
 
         } catch (error: any) {
-            console.error(error);
             console.error("Error during registration:", error);
 
             setTimeout(() => {
-                if (error.message === "User already exists") {
-                    setErrorSignUp(error.message);  
-                    setOpen(true);  
-                    setLoading(false);
-                } else {
-                    setErrorSignUp("An error occurred during registration.");
-                    setOpen(true);
-                    setLoading(false);
-                }
+                setLoading(false);
+                setErrorSignUp(error.message || "An error occurred during registration.");
+                setOpen(true);
             }, 1000);
         }
-    }
+    };
+
 
     return (
         <>

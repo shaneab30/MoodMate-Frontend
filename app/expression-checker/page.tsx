@@ -67,6 +67,9 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
             const formData = new FormData();
             formData.append('file', event.target.files![0]);
             const response = await fetch(url, {
+                headers: {
+                    Authorization : `Bearer ${localStorage.getItem("token")}`
+                },
                 method: "POST",
                 body: formData
             });
@@ -87,7 +90,8 @@ const ExpressionChecker: FunctionComponent<MoodCheckerProps> = () => {
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization : `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify({
                     username: user.username,

@@ -39,7 +39,8 @@ const EmotionPieChart = () => {
             const response = await fetch(url, {
                 headers: {
                     'Accept': "application/json, text/plain, */*",
-                    'Content-Type': "application/json;charset=utf-8"
+                    'Content-Type': "application/json;charset=utf-8",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
                 method: "GET",
             });

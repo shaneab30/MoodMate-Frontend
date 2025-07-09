@@ -2,6 +2,7 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useEffect, useState } from 'react';
+import { headers } from 'next/headers';
 
 interface HappinessRecord {
     _id: string;
@@ -27,10 +28,21 @@ const CalendarTracker = () => {
             if (!storedUser) return;
 
             const user = JSON.parse(storedUser);
-            const happinessResponse = await fetch(baseUrl + "/happiness");
+            const happinessResponse = await fetch(baseUrl + "/happiness",{
+                headers: {
+                    Authorization : `Bearer ${localStorage.getItem("token")}`
+                },
+                method: "GET",
+            }
+            );
             const happinessData = await happinessResponse.json();
 
-            const emotionResponse = await fetch(baseUrl + "/emotions");
+            const emotionResponse = await fetch(baseUrl + "/emotions", {
+                headers: {
+                    Authorization : `Bearer ${localStorage.getItem("token")}`
+                },
+                method: "GET",
+            });
             const emotionData = await emotionResponse.json();
 
             const happinessFiltered = happinessData.data.filter(

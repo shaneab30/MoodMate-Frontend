@@ -52,37 +52,37 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     useEffect(() => {
         const fetchData = async () => {
             const savedUser = localStorage.getItem("user");
-            let userExists = null;
+            // let userData = null;
             if (savedUser) {
                 const parsedUser = JSON.parse(savedUser);
                 setUser(parsedUser);
                 const userId = parsedUser._id;
 
                 try {
-                    const urlCheck = baseUrl + "/users"
+                    const urlCheck = baseUrl + "/users/me"
                     const responseCheck = await fetch(urlCheck, {
                         headers: {
                             'Accept': "application/json, text/plain, */*",
-                            'Content-Type': "application/json;charset=utf-8"
+                            'Content-Type': "application/json;charset=utf-8",
+                            Authorization: `Bearer ${localStorage.getItem("token")}`
                         },
                         method: "GET",
                     });
                     if (!responseCheck.ok) {
                         throw new Error("Failed to fetch user data.");
                     }
-                    const data = await responseCheck.json();
-                    userExists = data.data.find((user: any) => user._id === userId);
-                    if (userExists) {
+                    const userData = await responseCheck.json();
+                    if (userData) {
                         // console.log("User exists:", userExists);
 
-                        setUser(userExists);
+                        setUser(userData);
                         setformData({
-                            firstname: userExists.firstname || "",
-                            lastname: userExists.lastname || "",
-                            username: userExists.username || "",
-                            email: userExists.email || "",
-                            password: userExists.password || "",
-                            age: userExists.age || "",
+                            firstname: userData.firstname || "",
+                            lastname: userData.lastname || "",
+                            username: userData.username || "",
+                            email: userData.email || "",
+                            password: userData.password || "",
+                            age: userData.age || "",
                         });
                     }
 
@@ -107,78 +107,29 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     };
 
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
-        setLoading(true);
         event.preventDefault();
+        setLoading(true);
         setSnackbarError(null);
         setUsernameError(null);
         setPasswordError(null);
         setEmailError(null);
 
-        let hasError = false;
-        let errorMessages = [];
-
         if (formData.password.length < 6) {
             setPasswordError("Password must be at least 6 characters long");
             setSnackbarError("Password must be at least 6 characters long");
-            errorMessages.push("Password must be at least 6 characters long");
-            hasError = true;
+            setOpen(true);
+            setLoading(false);
+            return;
         }
 
-
-
         try {
-            // Check if username exists
-            const urlCheck = baseUrl + "/users";
-            const responseCheck = await fetch(urlCheck, {
-                headers: {
-                    'Accept': "application/json, text/plain, */*",
-                    'Content-Type': "application/json;charset=utf-8"
-                },
-                method: "GET",
-            });
-
-            if (!responseCheck.ok) {
-                throw new Error("Failed to fetch user data.");
-            }
-
-            const data = await responseCheck.json();
-            // Fix: Compare username and make sure it's not the current user's ID
-            const usernameExists = data.data.find((u: any) =>
-                u.username === formData.username && u._id !== user._id
-            );
-
-            const emailExists = data.data.find((u: any) => 
-                // console.log(u._id, user._id);
-                u.email === formData.email && u._id !== user._id
-            );
-            
-            if (usernameExists) {
-                setUsernameError("Username already exists");
-                errorMessages.push("Username already exists");
-                hasError = true;
-            }
-
-            if (emailExists) {
-                setEmailError("Email already exists");
-                errorMessages.push("Email already exists");
-                hasError = true;
-            }
-
-            if (hasError) {
-                setLoading(false);
-                setSnackbarError(errorMessages.join(", "));
-                setOpen(true);
-                setLoading(false);
-                return;
-            }
-
-            // If username is unique, proceed with update
             const url = baseUrl + "/users/" + user._id;
             const response = await fetch(url, {
                 method: "PUT",
                 headers: {
                     'Accept': "application/json, text/plain, */*",
-                    'Content-Type': "application/json;charset=utf-8"
+                    'Content-Type': "application/json;charset=utf-8",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify({
                     firstname: formData.firstname,
@@ -191,27 +142,33 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             });
 
             if (!response.ok) {
+                const errorData = await response.json();
+                if (errorData?.message?.includes("Username")) {
+                    setUsernameError("Username already exists");
+                }
+                if (errorData?.message?.includes("Email")) {
+                    setEmailError("Email already exists");
+                }
+                setSnackbarError(errorData?.message || "Failed to update user");
                 setOpen(true);
-                throw new Error("Failed to update user data.");
+                return;
             }
 
-            // Update local storage and state
-            const updatedUser = {
-                ...user,
-                ...formData,
-            };
+            const updatedUser = { ...user, ...formData };
             localStorage.setItem("user", JSON.stringify(updatedUser));
-            dispatch(login(updatedUser)); // Update Redux state
+            dispatch(login(updatedUser));
             setRefreshTrigger(prev => prev + 1);
             setOpen1(true);
-
         } catch (error: any) {
             console.error("Error updating profile:", error);
-            setSnackbarError(error.message || "Failed to update profile. Please try again later.");
+            setSnackbarError(error.message || "Failed to update profile");
+            setOpen(true);
         } finally {
             setTimeout(() => {
                 setLoading(false);
+                setOpen1(false);
             }, 1000);
+            // setLoading(false);
         }
     };
 
@@ -231,6 +188,9 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 // Upload the profile picture
                 const url = baseUrl + "/users/" + user._id + "/profile-picture";
                 const response = await fetch(url, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    },
                     method: "POST",
                     body: formData
                 });

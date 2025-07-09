@@ -50,6 +50,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         if (!formData.username || !formData.password) {
             setError("Username and password are required.");
             return;
@@ -57,55 +58,63 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
         setError(null);
         setLoading(true);
+
         try {
-            const url = baseUrl + "/users"
-            const response = await fetch(url, {
+            // 1. Send credentials to /login
+            const loginResponse = await fetch(`${baseUrl}/login`, {
+                method: "POST",
                 headers: {
-                    'Accept': "application/json, text/plain, */*",
-                    'Content-Type': "application/json;charset=utf-8"
+                    "Content-Type": "application/json",
                 },
-                method: "GET",
+                body: JSON.stringify({
+                    username: formData.username,
+                    password: formData.password,
+                }),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch user data.");
+            if (!loginResponse.ok) {
+                throw new Error("Login failed. Check your credentials.");
             }
-            const data = await response.json();
-            // console.log(data.data);
-            const user = data.data.find((user: any) => user.username === formData.username);
 
-            if (user && user.password === formData.password) {
-                dispatch(login(user));
-                // console.log(dispatch(login(user)));
-                console.log("Login success")
-                localStorage.setItem("user", JSON.stringify(user));
+            const loginData = await loginResponse.json();
+            const token = loginData.access_token;
 
-                setOpen1(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    router.push("/articles");
-                }, 1000);
+            // 2. Store token
+            localStorage.setItem("token", token);
 
-            } else {
-                console.log("Login failed");
+            // 3. Use token to fetch user data from /users/me
+            const userResponse = await fetch(`${baseUrl}/users/me`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-                setTimeout(() => {
-                    setOpen(true);
-                    setLoading(false);
-                    setError("Invalid username or password.");
-                }, 1000);
-                setError(null);
+            if (!userResponse.ok) {
+                throw new Error("Failed to retrieve user data.");
             }
-        } catch (error) {
-            console.log(error);
-            setError("An error occurred while logging in. Please try again.");
+
+            const userData = await userResponse.json();
+
+            localStorage.setItem("user", JSON.stringify(userData));
+            dispatch(login(userData));
+
+            console.log("Login success", userData);
+
+            setOpen1(true);
+            setTimeout(() => {
+                setLoading(false);
+                router.push("/articles");
+            }, 1000);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "An error occurred during login.");
             setTimeout(() => {
                 setOpen(true);
                 setLoading(false);
             }, 1000);
         }
-    }
-
+    };
     return (<>
         {loading && (
             <Box sx={{ width: '100%' }}>
@@ -153,7 +162,11 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                         </div>
                         <div className={styles.button}>
                             <Button variant="contained" type="submit" style={{ backgroundColor: "black", width: "24%" }}>Sign In</Button>
-                            <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
+                            <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}
+                                sx={{
+                                    zIndex: 1000,
+                                    position: "fixed"
+                                }}>
                                 <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
                                     {error}
                                 </Alert>
