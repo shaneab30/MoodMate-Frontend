@@ -203,7 +203,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 const newProfilePicture = data.filePath;
 
                 if (data.status) {
-                    setAvatarSrc(`${baseUrl}/${data.filePath}`);
+                    // setAvatarSrc(`${baseUrl}/uploads/profile_pictures?filename=${data.filePath}`);
                     const updatedUser = {
                         ...user,
                         profilePicture: newProfilePicture,
@@ -226,7 +226,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     useEffect(() => {
         if (user?.profilePicture) {
-            setAvatarSrc(`${baseUrl}/${user.profilePicture}`);
+            setAvatarSrc(`${baseUrl}/uploads/profile_pictures?filename=${user.profilePicture}`);
         } else if (user?.username) {
             // Fallback to generated avatar if no profile picture
             setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);

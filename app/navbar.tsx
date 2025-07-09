@@ -26,6 +26,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
+    const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null);
     const currentUser = useAppSelector((state) => state.user.currentUser)
     const baseUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -78,6 +79,32 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
 
     useEffect(() => {
         // console.log(currentUser);
+    }, [currentUser]);
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (!currentUser?.profilePicture) {
+                return;
+            }
+            try {
+                const res = await fetch(`${baseUrl}/uploads/profile_pictures?filename=${currentUser.profilePicture}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+                if (!res.ok) {
+                    throw new Error("Failed to fetch image");
+                }
+
+                const blob = await res.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                setProfilePictureUrl(imageUrl);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchImage();
     }, [currentUser]);
 
     return (
@@ -217,8 +244,8 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                     <Avatar
                                         alt={currentUser?.username}
                                         src={
-                                            currentUser?.profilePicture
-                                                ? `${baseUrl}/${currentUser.profilePicture}`
+                                            profilePictureUrl
+                                                ? profilePictureUrl
                                                 : currentUser?.username
                                                     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.username)}&background=random`
                                                     : undefined
