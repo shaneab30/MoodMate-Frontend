@@ -50,10 +50,11 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                 router.push('/profile');
                 break;
             case 'Logout':
-                router.push('/sign-in');
+
                 dispatch(logout());
                 localStorage.removeItem("user");
                 localStorage.removeItem("lastHappinessSubmit");
+                router.push('/sign-in');
                 handleCloseUserMenu();
                 break;
             default:
@@ -64,8 +65,15 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
 
     useEffect(() => {
         // console.log(JSON.parse(localStorage.getItem("user")!))
-        const localUser = JSON.parse(localStorage.getItem("user")!)
-        dispatch(login(localUser))
+        const localUser = localStorage.getItem("user")
+        if (localUser) {
+            try {
+                const user = JSON.parse(localUser);
+                dispatch(login(user));
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }, [])
 
     useEffect(() => {
@@ -73,14 +81,6 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     }, [currentUser]);
 
     return (
-        // <AppBar
-        //     position="static"
-        //     className="navbar"
-        //     style={{
-        //         background: "linear-gradient(135deg,rgb(141, 34, 255) 0%,rgb(255, 123, 198) 50%,rgb(45, 136, 255) 100%)",
-        //         boxShadow: "none"
-        //     }}
-        // >
         <AppBar
             position="static"
             className="navbar"
