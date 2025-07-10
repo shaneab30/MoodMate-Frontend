@@ -102,7 +102,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
       <div className={styles.intro}>
         <div className={styles.introDesc}>
 
-          <TextGenerateEffect words={words} duration={0.5} />
+          <TextGenerateEffect words={words} duration={0.1} />
 
         </div>
         <div className={styles.introTitle}>
