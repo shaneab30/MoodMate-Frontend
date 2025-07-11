@@ -19,7 +19,10 @@
 }
 
 .content {
-  height: 100vh;
+  /* Remove height and flex properties */
+  width: 100%;
+  padding-bottom: 40px; /* Optional: add some bottom padding */
+  background: transparent;
 }
 
 .cards {
@@ -33,31 +36,49 @@
   margin: auto;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.5s;
-  /* justify-content: center; */
-  /* align-items: center; */
-  background-color: whitesmoke;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+
+.cardBorder {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   border-radius: 10px;
-  color: black;
+  transition: box-shadow .5s;
 }
 
-.card:hover {
-  box-shadow: 0 0 20px rgb(0, 0, 0, 0.5);
+.card:hover .cardBorder {
+  box-shadow: 0 0 20px rgb(0, 0, 0, 0.65);
 }
 
-.card .cardTitle {
+.card .articlesTitle {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 300px;
   color: black;
   padding: 12px;
   font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.card .articlesContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: justify;
+  align-items: justify;
+  color: black;
+  padding: 12px;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.card .articlesAuthor {
+  display: flex;
+  flex-direction: column;
+  justify-content: justify;
+  align-items: justify;
+  color: black;
+  padding: 12px;
+  font-weight: 400;
+  font-size: 0.9rem;
 }
 
 .card .cardButton {
