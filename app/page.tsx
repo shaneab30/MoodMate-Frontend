@@ -117,20 +117,20 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
             className={styles.intro}
             initial={{ opacity: 0, y: 60 }}
             animate={showIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 2 , ease: "easeOut", delay: 0.5 }}
           >
             <div className={styles.introDesc}>
               {showIntro && <p>{words}</p>}
             </div>
             <div className={styles.introTitle}>
-              <motion.h1
+              {/* <motion.h1
                 initial={false}
                 animate={showIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 2, delay: 0.5 }}
+                transition={{ duration: 1.5 }}
                 className={styles.underlineGradient}
-              >
-                What is MoodMate?
-              </motion.h1>
+              > */}
+                <h1 className={styles.underlineGradient}>What is MoodMate?</h1>
+              {/* </motion.h1> */}
             </div>
           </motion.div>
         </LazyMotion>
@@ -142,7 +142,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
             className={styles.cardsContainer}
             initial={{ opacity: 0, y: 60 }}
             animate={showCards ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 2, ease: "easeOut" }}
           >
             <h1 className={styles.underlineGradient}>Why is Your Mental Health Important?</h1>
             <div className={styles.cards}>

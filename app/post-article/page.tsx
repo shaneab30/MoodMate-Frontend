@@ -4,6 +4,7 @@ import { FunctionComponent, useState } from "react";
 import styles from './page.module.css'
 import { useAppSelector } from "@/redux/hooks";
 import React from "react";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AddArticleProps {
 
@@ -66,6 +67,11 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
         });
     }
 
+    const removeImage = (name: string) => {
+        setimages(images.filter(img => img.name !== name));
+    };
+
+
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -111,31 +117,53 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
     };
 
     return (<>
-        <div style={{ padding: 20 }}>
-            <div className={styles.title}>Add Produk ke Store</div>
-            <form onSubmit={(e) => { submit(e); }}>
+        <div className={styles.formCard}>
+            <div className={styles.title}>Post an Article</div>
+            <form onSubmit={submit}>
                 <div className={styles.container}>
-                    <TextField fullWidth name="title" label="Judul" variant="outlined" value={formdata.title} onChange={(e) => setformdata({ ...formdata, title: e.target.value })} />
                     <TextField
+                        fullWidth
+                        name="title"
+                        label="Title"
+                        variant="outlined"
+                        value={formdata.title}
+                        onChange={(e) => setformdata({ ...formdata, title: e.target.value })}
+                    />
+                    <TextField
+                        fullWidth
+                        multiline
+                        minRows={4}
                         label="Content"
                         value={formdata.content}
                         onChange={(e) => setformdata({ ...formdata, content: e.target.value })}
-                        name="numberformat"
-                        id="formatted-numberformat-input"
-                        // InputProps={{
-                        //     inputComponent: NumericFormatCustom as any,
-                        // }}
                         variant="outlined"
                     />
-                    {/* <TextField fullWidth name="harga" type="number" label="Harga produk" variant="outlined" value={formdata.harga} onChange={(e) => setformdata({ ...formdata, harga: e.target.value })} /> */}
-                    {/* <TextField multiline rows={4} fullWidth name="deskripsi" label="Deskripsi produk" variant="outlined" value={formdata.} onChange={(e) => setformdata({ ...formdata, deskripsi: e.target.value })} /> */}
-                    <input type="file" accept="image/*" multiple onChange={(e) => { handleFileSelector(e.target.files) }} />
-                    <div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => handleFileSelector(e.target.files)}
+                        style={{ marginTop: 8 }}
+                    />
+                    <div className={styles.imagePreviewGrid}>
                         {images && images.length > 0 && images.map((image) => (
-                            <img src={URL.createObjectURL(image)} key={image.name} style={{ width: 100, height: 100, objectFit: 'cover', display: 'inline-block', marginRight: 10 }} />
+                            <div className={styles.imagePreviewItem} key={image.name}>
+                                <img
+                                    src={URL.createObjectURL(image)}
+                                    className={styles.imagePreviewImg}
+                                    alt={image.name}
+                                />
+                                <button
+                                    type="button"
+                                    className={styles.removeBtn}
+                                    onClick={() => removeImage(image.name)}
+                                    title="Remove"
+                                >
+                                    <CloseIcon style={{ fontSize: 12 }} />
+                                </button>
+                            </div>
                         ))}
                     </div>
-
                     <div className={styles.containerButtons}>
                         <Button variant="contained" type="submit" onClick={handleClick}>Submit</Button>
                         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -146,7 +174,7 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                     </div>
                 </div>
             </form>
-        </div>;
+        </div>
     </>);
 }
 

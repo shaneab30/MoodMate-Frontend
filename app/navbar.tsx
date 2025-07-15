@@ -9,7 +9,7 @@ import { login, logout } from "@/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Logout } from "@mui/icons-material";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, CirclePlus, SquarePlus } from "lucide-react";
 
 interface NavBarProps {
 
@@ -233,6 +233,17 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
                                 </Button>
                             ))
                         )}
+
+                    </Box>
+                    <Box sx={{ flexGrow: 0.025 }} >
+                        {currentUser ? (
+                            <Tooltip title="Post an Article" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                <SquarePlus size={24} style={{ color: 'white', cursor: 'pointer' }} onClick={() => router.push('/post-article')} />
+                            </Tooltip>
+                        ) : (
+                            undefined
+                        )
+                        }
 
                     </Box>
 
