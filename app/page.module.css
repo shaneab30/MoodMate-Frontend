@@ -1,4 +1,4 @@
-.container {
+.header {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -378,7 +378,7 @@
 
 /* Mobile styles */
 @media (max-width: 800px) {
-  .container {
+  .header {
     flex-direction: column;
     padding: 30px 10px;
     gap: 20px;
