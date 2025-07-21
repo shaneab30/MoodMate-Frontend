@@ -24,7 +24,7 @@ const user: FunctionComponent<userProps> = ({ params }) => {
     const [initialLoading, setInitialLoading] = useState(true);
     const [page, setPage] = React.useState(0);
     const [hasMore, setHasMore] = React.useState(true);
-    const limit = 8;
+    const limit = 100;
 
     // Fetch user profile
     const fetchProfile = useCallback(async () => {
