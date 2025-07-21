@@ -205,7 +205,7 @@ const user: FunctionComponent<userProps> = ({ params }) => {
                     <Grid container spacing={2} style={{ padding: "50px 100px" }}>
                         {articles.map((article) => (
                             <Grid item xs={6} lg={3} key={article._id} className={styles.card}>
-                                <Link href={`/articles/${article.title.replace(/\s+/g, '-').toLowerCase()}?id=${article._id}`}>
+                                <Link href={`/user/${username}/${article._id}`} className={styles.cardLink}>
                                     <div className={styles.cardBorder}>
                                         <img
                                             src={
