@@ -2,7 +2,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Link from "next/link";
-import { FunctionComponent, use, useCallback, useEffect, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Avatar from "@mui/material/Avatar";
 import React from "react";
@@ -14,65 +14,103 @@ interface userProps {
 }
 
 const user: FunctionComponent<userProps> = ({ params }) => {
-
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const { username } = params;
 
     const [avatarSrc, setAvatarSrc] = React.useState<string | undefined>(undefined);
     const [profile, setProfile] = useState<any>(null);
     const [articles, setArticles] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
     const [page, setPage] = React.useState(0);
     const [hasMore, setHasMore] = React.useState(true);
     const limit = 8;
 
+    // Fetch user profile
+    const fetchProfile = useCallback(async () => {
+        try {
+            const profileRes = await fetch(`${baseUrl}/users/username/${username}`, {
+                method: "GET"
+            });
 
-    const fetchArticles = useCallback(async (currentPage: number) => {
-        if (loading || !hasMore) return;
+            if (!profileRes.ok) throw new Error("Failed to fetch user profile");
+            const profileData = await profileRes.json();
+            setProfile(profileData);
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+        }
+    }, [baseUrl, username]);
+
+    // Fetch articles with pagination
+    const fetchArticles = useCallback(async (currentPage: number, reset: boolean = false) => {
+        if (loading || (!hasMore && !reset)) return;
 
         setLoading(true);
         try {
-            const response = await fetch(`${baseUrl}/articles?skip=${currentPage * limit}&limit=${limit}`, {
+            // Calculate skip based on currentPage and limit
+            const skip = currentPage * limit;
+            
+            const response = await fetch(`${baseUrl}/articles?skip=${skip}&limit=${limit}`, {
                 method: "GET"
             });
 
             if (!response.ok) throw new Error("Failed to fetch articles");
             const data = await response.json();
 
+            // Filter articles by username
             const articlesByUser = data.data.filter((article: any) => article.username === username);
 
-            if (articlesByUser && Array.isArray(articlesByUser)) {
+            if (reset) {
+                setArticles(articlesByUser);
+            } else {
                 setArticles(prev => {
                     const existingIds = new Set(prev.map(a => a._id));
                     const newArticles = articlesByUser.filter((a: any) => a._id && !existingIds.has(a._id));
                     return [...prev, ...newArticles];
                 });
+            }
 
-                // Check if we've reached the end
-                if (articlesByUser.length < limit) {
-                    setHasMore(false);
-                }
-            } else {
+            // Check if we've reached the end
+            if (articlesByUser.length < limit) {
                 setHasMore(false);
             }
+
+            console.log(`Loaded ${articlesByUser.length} articles for page ${currentPage}`);
+
         } catch (error) {
             console.error("Error fetching articles:", error);
         } finally {
             setLoading(false);
+            if (reset) setInitialLoading(false);
         }
-    }, [baseUrl, limit, loading, hasMore]);
+    }, [baseUrl, username, limit, loading, hasMore]);
 
+    // Load more articles (increment page)
     const loadMoreArticles = useCallback(() => {
         if (!loading && hasMore) {
-            setPage(prev => prev + 1);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchArticles(nextPage);
         }
-    }, [loading, hasMore]);
+    }, [loading, hasMore, page, fetchArticles]);
 
-    // Initial fetch
+    // Initial data fetch
     useEffect(() => {
-        fetchArticles(0);
-    }, []);
+        const initializeData = async () => {
+            setInitialLoading(true);
+            setArticles([]);
+            setPage(0);
+            setHasMore(true);
+            
+            // Fetch profile and initial articles
+            await fetchProfile();
+            await fetchArticles(0, true);
+        };
 
+        initializeData();
+    }, [username]); // Only depend on username
+
+    // Scroll event handler
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
@@ -82,7 +120,7 @@ const user: FunctionComponent<userProps> = ({ params }) => {
                 clearTimeout(timeoutId);
             }
 
-            // Set new timeout
+            // Set new timeout for debouncing
             timeoutId = setTimeout(() => {
                 // Check if we're near the bottom
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -91,10 +129,10 @@ const user: FunctionComponent<userProps> = ({ params }) => {
 
                 const nearBottom = scrollTop + windowHeight >= documentHeight - 600;
 
-                if (nearBottom && hasMore && !loading) {
+                if (nearBottom && hasMore && !loading && !initialLoading) {
                     loadMoreArticles();
                 }
-            }, 100); // Reduced debounce time for better responsiveness
+            }, 100);
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -105,47 +143,9 @@ const user: FunctionComponent<userProps> = ({ params }) => {
                 clearTimeout(timeoutId);
             }
         };
-    }, [loadMoreArticles, hasMore, loading]);
+    }, [loadMoreArticles, hasMore, loading, initialLoading]);
 
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const profileRes = await fetch(`${baseUrl}/users/username/${username}`, {
-                    method: "GET"
-                });
-
-                if (!profileRes.ok) throw new Error("Failed to fetch user profile");
-                const profileData = await profileRes.json();
-                setProfile(profileData);
-
-                const articlesRes = await fetch(`${baseUrl}/articles`, {
-                    method: "GET"
-                });
-
-                if (!articlesRes.ok) throw new Error("Failed to fetch user articles");
-                const articlesData = await articlesRes.json();
-
-                const articlesByUser = articlesData.data.filter((article: any) => article.username === username);
-
-                console.log("Articles by user:", articlesByUser);
-
-                setArticles(articlesByUser);
-                setLoading(false);
-
-
-
-            } catch (error) {
-                console.error("Error fetching user articles:", error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [username, baseUrl]);
-
+    // Fetch avatar when profile is available
     useEffect(() => {
         const getAvatar = async () => {
             if (!profile || !profile.data || !profile.data[0] || !profile.data[0].profilePicture) {
@@ -175,90 +175,93 @@ const user: FunctionComponent<userProps> = ({ params }) => {
         }
     }, [profile, baseUrl]);
 
-    useEffect(() => {
-        console.log("Articles: ", articles)
-        console.log("Profile: ", profile);
-    }, [articles, profile]);
+    // // Debug logging
+    // useEffect(() => {
+    //     console.log("Articles: ", articles);
+    //     console.log("Profile: ", profile);
+    //     console.log("Page: ", page);
+    //     console.log("HasMore: ", hasMore);
+    // }, [articles, profile, page, hasMore]);
 
-    return (<>
-        <div className={styles.headerProfile}>
-            <div className={styles.title}>
-                <h1 >Profile</h1>
+    return (
+        <>
+            <div className={styles.headerProfile}>
+                <div className={styles.title}>
+                    <h1>Profile</h1>
+                </div>
+                <div className={styles.contentProfile}>
+                    <div className={styles.avatar}>
+                        <Avatar sx={{ width: 100, height: 100 }} alt={profile?.username} src={avatarSrc} />
+                    </div>
+                    <div className={styles.textProfile}>
+                        <div style={{ fontWeight: "bold" }}>{username || "Guest"}</div>
+                        <div>Age: {profile?.data[0]?.age}</div>
+                    </div>
+                </div>
             </div>
-            <div className={styles.contentProfile}>
-                <div className={styles.avatar}>
-                    <Avatar sx={{ width: 100, height: 100 }} alt={profile?.username} src={avatarSrc} />
-                </div>
-                <div className={styles.textProfile}>
-                    <div style={{ fontWeight: "bold" }}>{username || "Guest"} </div>
-                    <div>Age: {profile?.data[0]?.age}</div>
-                </div>
+            
+            <div className={styles.content}>
+                {articles.length > 0 ? (
+                    <Grid container spacing={2} style={{ padding: "50px 100px" }}>
+                        {articles.map((article) => (
+                            <Grid item xs={6} lg={3} key={article._id} className={styles.card}>
+                                <Link href={`/articles/${article.title.replace(/\s+/g, '-').toLowerCase()}?id=${article._id}`}>
+                                    <div className={styles.cardBorder}>
+                                        <img
+                                            src={
+                                                Array.isArray(article.image)
+                                                    ? `${baseUrl}/articles/images/${article.image[0]}`
+                                                    : `${baseUrl}/articles/images/${article.image}`
+                                            }
+                                            alt={article.title}
+                                            style={{
+                                                borderRadius: "10px 10px 0 0",
+                                                height: "200px",
+                                                width: "100%",
+                                                objectFit: "cover"
+                                            }}
+                                            loading="lazy"
+                                        />
+                                        <div className={styles.articlesTitle}>
+                                            <p>{article.title}</p>
+                                        </div>
+                                        <div className={styles.articlesContent}>
+                                            <p>
+                                                {article.content.length > 100
+                                                    ? article.content.substring(0, 100) + '...'
+                                                    : article.content}
+                                            </p>
+                                        </div>
+                                        <div className={styles.articlesAuthor}>
+                                            <p>
+                                                {article.username} -{" "}
+                                                <span>{new Date(article.date).toLocaleDateString()}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </Grid>
+                        ))}
+                    </Grid>
+                ) : (
+                    !initialLoading && <div className={styles.center}>No articles found</div>
+                )}
+                
+                {(loading || initialLoading) && (
+                    <div style={{
+                        textAlign: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        width: "100%",
+                        padding: "20px"
+                    }}>
+                        <CircularProgress size={50} />
+                    </div>
+                )}
             </div>
-
-
-        </div >
-        <div className={styles.content}>
-            {articles.length > 0 ? (
-                <Grid container spacing={2} style={{ padding: "50px 100px" }}>
-                    {articles.map((article) => (
-                        <Grid item xs={6} lg={3} key={article._id} className={styles.card}>
-                            <Link href={`/articles/${article.title.replace(/\s+/g, '-').toLowerCase()}?id=${article._id}`}>
-                                <div className={styles.cardBorder}>
-                                    <img
-                                        src={
-                                            Array.isArray(article.image)
-                                                ? `${baseUrl}/articles/images/${article.image[0]}`
-                                                : `${baseUrl}/articles/images/${article.image}`
-                                        }
-                                        alt={article.title}
-                                        style={{
-                                            borderRadius: "10px 10px 0 0",
-                                            height: "200px",
-                                            width: "100%",
-                                            objectFit: "cover"
-                                        }}
-                                        loading="lazy"
-                                    />
-                                    <div className={styles.articlesTitle}>
-                                        <p>{article.title}</p>
-                                    </div>
-                                    <div className={styles.articlesContent}>
-                                        <p>
-                                            {article.content.length > 100
-                                                ? article.content.substring(0, 100) + '...'
-                                                : article.content}
-                                        </p>
-                                    </div>
-                                    <div className={styles.articlesAuthor}>
-                                        <p>
-                                            {article.username} -{" "}
-                                            <span>{new Date(article.date).toLocaleDateString()}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </Link>
-                        </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                !loading && <div className={styles.center}>No articles found</div>
-            )}
-            {loading && (
-                <div style={{
-                    textAlign: "center",
-                    alignItems: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    padding: "20px"
-                }}>
-                    <CircularProgress size={50} />
-                </div>
-            )}
-        </div>
-
-    </>
+        </>
     );
-}
+};
 
 export default user;
