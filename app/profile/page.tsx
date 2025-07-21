@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from "@/redux/features/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { get } from "http";
 
 interface ProfileProps {
 
@@ -225,10 +226,27 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     };
 
     useEffect(() => {
+        const getAvatar = async () => {
+            try {
+                const response = await fetch(`${baseUrl}/uploads/profile_pictures?filename=${user?.profilePicture}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+                if (!response.ok) throw new Error("Failed to fetch image");
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                setAvatarSrc(imageUrl);
+            } catch (error) {
+                console.error("Error fetching image:", error);
+            }
+        };
+
         if (user?.profilePicture) {
-            setAvatarSrc(`${baseUrl}/uploads/profile_pictures?filename=${user.profilePicture}`);
+            getAvatar();
+            // setAvatarSrc(`${baseUrl}/uploads/profile_pictures?filename=${user.profilePicture}`);
         } else if (user?.username) {
-            // Fallback to generated avatar if no profile picture
             setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`);
         } else {
             setAvatarSrc(undefined);

@@ -22,9 +22,6 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
         setLoading(true);
         try {
             const response = await fetch(`${baseUrl}/articles?skip=${currentPage * limit}&limit=${limit}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-                },
                 method: "GET"
             });
 
@@ -108,8 +105,6 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
 
     return (
         <>
-
-
             <div className={styles.content}>
                 {articles.length > 0 ? (
                     <Grid container spacing={2} style={{ padding: "50px 100px" }}>
@@ -130,7 +125,7 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                                                 width: "100%",
                                                 objectFit: "cover"
                                             }}
-                                            loading="lazy" // Add lazy loading for better performance
+                                            loading="lazy"
                                         />
                                         <div className={styles.articlesTitle}>
                                             <p>{article.title}</p>
