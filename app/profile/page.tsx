@@ -19,6 +19,8 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
     const dispatch = useAppDispatch();
     const [showPassword, setShowPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showNewPassword2, setShowNewPassword2] = useState(false);
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -109,8 +111,16 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     }
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
+    const handleClickShowNewPassword2 = () => setShowNewPassword2((show) => !show);
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const handleMouseDownNewPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const handleMouseDownNewPassword2 = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
 
@@ -451,18 +461,19 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             InputLabelProps={{ shrink: true }}
                             disabled={!changePassword}
                             required={changePassword}
-                            type={showPassword ? 'text' : 'password'}
+                            type={showNewPassword ? 'text' : 'password'}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
+                                            disabled={!changePassword}
                                             aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={handleClickShowNewPassword}
+                                            onMouseDown={handleMouseDownNewPassword}
                                             edge="end"
                                             style={{ paddingRight: "20px" }}
                                         >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {showNewPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -481,18 +492,19 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             InputLabelProps={{ shrink: true }}
                             disabled={!changePassword}
                             required={changePassword}
-                            type={showPassword ? 'text' : 'password'}
+                            type={showNewPassword2 ? 'text' : 'password'}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
+                                            disabled={!changePassword}
                                             aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={handleClickShowNewPassword2}
+                                            onMouseDown={handleMouseDownNewPassword2}
                                             edge="end"
                                             style={{ paddingRight: "20px" }}
                                         >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {showNewPassword2 ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
