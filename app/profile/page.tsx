@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Avatar, Box, Button, ButtonBase, IconButton, InputAdornment, LinearProgress, Snackbar, TextField } from "@mui/material";
+import { Alert, Avatar, Box, Button, ButtonBase, FormControlLabel, IconButton, InputAdornment, LinearProgress, Snackbar, TextField } from "@mui/material";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
 import React from "react";
@@ -8,6 +8,8 @@ import { login } from "@/redux/features/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { get } from "http";
+// import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@mui/material";
 
 interface ProfileProps {
 
@@ -25,6 +27,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     const [usernameError, setUsernameError] = useState<string | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
+    const [newPasswordError, setNewPasswordError] = useState<string | null>(null);
     const [snackbarError, setSnackbarError] = useState<string | null>(null);
     const [formData, setformData] = useState({
         firstname: "",
@@ -32,6 +35,8 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         username: "",
         email: "",
         password: "",
+        newPassword: "",
+        newPassword2: "",
         age: "",
     });
 
@@ -82,8 +87,10 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             lastname: userData.lastname || "",
                             username: userData.username || "",
                             email: userData.email || "",
-                            password: userData.password || "",
+                            password: "",
                             age: userData.age || "",
+                            newPassword: "",
+                            newPassword2: "",
                         });
                     }
 
@@ -107,17 +114,32 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         event.preventDefault();
     };
 
+    const [changePassword, setChangePassword] = useState(false);
+
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChangePassword(event.target.checked);
+    };
+
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
         setSnackbarError(null);
         setUsernameError(null);
         setPasswordError(null);
+        setNewPasswordError(null);
         setEmailError(null);
 
-        if (formData.password.length < 6) {
-            setPasswordError("Password must be at least 6 characters long");
+        if (changePassword && (formData.newPassword.length < 6 || formData.newPassword2.length < 6)) {
+            setNewPasswordError("Password must be at least 6 characters long");
             setSnackbarError("Password must be at least 6 characters long");
+            setOpen(true);
+            setLoading(false);
+            return;
+        }
+
+        if (formData.newPassword && formData.newPassword !== formData.newPassword2) {
+            setNewPasswordError("New passwords do not match");
+            setSnackbarError("New passwords do not match");
             setOpen(true);
             setLoading(false);
             return;
@@ -125,6 +147,16 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
         try {
             const url = baseUrl + "/users/" + user._id;
+            const requestBody = {
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                username: formData.username,
+                age: formData.age,
+                email: formData.email,
+                password: formData.password,
+                newPassword: changePassword ? formData.newPassword : undefined, // Only send new_password if checkbox is checked
+            };
+
             const response = await fetch(url, {
                 method: "PUT",
                 headers: {
@@ -132,14 +164,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                     'Content-Type': "application/json;charset=utf-8",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({
-                    firstname: formData.firstname,
-                    lastname: formData.lastname,
-                    username: formData.username,
-                    age: formData.age,
-                    email: formData.email,
-                    password: formData.password
-                }),
+                body: JSON.stringify(requestBody),
             });
 
             if (!response.ok) {
@@ -150,6 +175,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 if (errorData?.message?.includes("Email")) {
                     setEmailError("Email already exists");
                 }
+                setPasswordError(errorData?.message || "Failed to update user");
                 setSnackbarError(errorData?.message || "Failed to update user");
                 setOpen(true);
                 return;
@@ -315,6 +341,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
                     <div className={styles.textProfile}>
                         <div style={{ fontWeight: "bold" }}>{user?.username || "Guest"} </div>
+                        <div>{user?.firstname} {user?.lastname}</div>
                         <div>Email: {user?.email}</div>
                     </div>
                 </div>
@@ -377,7 +404,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                         />
                         <TextField
                             id="password"
-                            label="Password"
+                            label="Retype Password to Confirm Changes"
                             variant="standard"
                             fullWidth
                             value={formData.password}
@@ -395,7 +422,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                             edge="end"
                                             style={{ paddingRight: "20px" }}
                                         >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -403,6 +430,77 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             error={!!passwordError}
                             helperText={passwordError}
                         />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={changePassword}
+                                    onChange={handleCheckboxChange}
+                                />
+                            }
+                            label="I want to change my password"
+                        />
+
+
+                        <TextField
+                            id="newPassword"
+                            label="New Password"
+                            variant="standard"
+                            fullWidth
+                            value={formData.newPassword}
+                            onChange={(e) => { setformData({ ...formData, newPassword: e.target.value }) }}
+                            InputLabelProps={{ shrink: true }}
+                            disabled={!changePassword}
+                            required={changePassword}
+                            type={showPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            style={{ paddingRight: "20px" }}
+                                        >
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={!!newPasswordError}
+                            helperText={newPasswordError}
+                        />
+
+                        <TextField
+                            id="retypeNewPassword"
+                            label="Retype New Password"
+                            variant="standard"
+                            fullWidth
+                            value={formData.newPassword2}
+                            onChange={(e) => { setformData({ ...formData, newPassword2: e.target.value }) }}
+                            InputLabelProps={{ shrink: true }}
+                            disabled={!changePassword}
+                            required={changePassword}
+                            type={showPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            style={{ paddingRight: "20px" }}
+                                        >
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={!!newPasswordError}
+                            helperText={newPasswordError}
+                        />
+
                         <Button
                             type="submit"
                             variant="contained"
@@ -411,11 +509,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                         >
                             Update Profile
                         </Button>
-                        {/* {error && (
-                            <div style={{ color: 'red', marginTop: '10px' }}>
-                                {error}
-                            </div>
-                        )} */}
                     </form>
                 </div>
                 <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
