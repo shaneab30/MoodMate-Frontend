@@ -1,6 +1,6 @@
 'use client';
-import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { Alert, Box, Button, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Snackbar, TextField } from "@mui/material";
+import { VisibilityOff, Visibility, CheckCircle } from "@mui/icons-material";
+import { Alert, Box, Button, CircularProgress, circularProgressClasses, Fade, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { FunctionComponent, use, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
@@ -20,6 +20,7 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
     const router = useRouter();
+    const [showSuccess, setShowSuccess] = useState(false);
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const [formData, setformData] = useState({
@@ -93,20 +94,22 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                 throw new Error(msg);
             }
 
-            // Success!
-            setOpen1(true);
             setTimeout(() => {
                 setLoading(false);
-                router.push("/sign-in");
+                setShowSuccess(true);
             }, 1000);
+
+            setTimeout(() => {
+                router.push("/sign-in");
+            }, 2000);
 
         } catch (error: any) {
             console.error("Error during registration:", error);
+            setErrorSignUp(error.message || "An error occurred during registration.");
 
             setTimeout(() => {
-                setLoading(false);
-                setErrorSignUp(error.message || "An error occurred during registration.");
                 setOpen(true);
+                setLoading(false);
             }, 1000);
         }
     };
@@ -114,9 +117,53 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
 
     return (
         <>
-            {loading && (
-                <Box sx={{ width: '100%' }}>
-                    <LinearProgress />
+            {(loading || showSuccess) && (
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    zIndex: 9999
+                }}>
+                    {loading && (
+                        <Fade in={loading} timeout={300}>
+                            <CircularProgress
+                                variant="indeterminate"
+                                disableShrink
+                                sx={{
+                                    color: '#1a90ff',
+                                    animationDuration: '550ms',
+                                    [`& .${circularProgressClasses.circle}`]: {
+                                        strokeLinecap: 'round',
+                                    },
+                                }}
+                                size={40}
+                                thickness={4}
+                            />
+                        </Fade>
+                    )}
+
+                    {showSuccess && (
+                        <Fade in={showSuccess} timeout={500}>
+                            <CheckCircle
+                                sx={{
+                                    color: '#4caf50',
+                                    fontSize: 48,
+                                    '@keyframes scaleIn': {
+                                        '0%': { transform: 'scale(0)' },
+                                        '50%': { transform: 'scale(1.2)' },
+                                        '100%': { transform: 'scale(1)' }
+                                    },
+                                    animation: 'scaleIn 0.3s ease-out'
+                                }}
+                            />
+                        </Fade>
+                    )}
                 </Box>
             )}
             <div className={styles.outercontainer}>

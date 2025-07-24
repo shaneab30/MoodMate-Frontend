@@ -1,6 +1,6 @@
 'use client';
-import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { Alert, Box, Button, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Snackbar, TextField } from "@mui/material";
+import { VisibilityOff, Visibility, CheckCircle } from "@mui/icons-material";
+import { Alert, Box, Button, CircularProgress, circularProgressClasses, Fade, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { error } from "console";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
     const [error, setError] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -50,6 +51,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
     const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setOpen(false);
 
         if (!formData.username || !formData.password) {
             setError("Username and password are required.");
@@ -60,7 +62,6 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         setLoading(true);
 
         try {
-            // 1. Send credentials to /login
             const loginResponse = await fetch(`${baseUrl}/login`, {
                 method: "POST",
                 headers: {
@@ -79,10 +80,8 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
             const loginData = await loginResponse.json();
             const token = loginData.access_token;
 
-            // 2. Store token
             localStorage.setItem("token", token);
 
-            // 3. Use token to fetch user data from /users/me
             const userResponse = await fetch(`${baseUrl}/users/me`, {
                 method: "GET",
                 headers: {
@@ -101,11 +100,14 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
 
             // console.log("Login success", userData);
 
-            setOpen1(true);
             setTimeout(() => {
                 setLoading(false);
-                router.push("/articles");
+                setShowSuccess(true);
             }, 1000);
+
+            setTimeout(() => {
+                router.push("/articles");
+            }, 2000);
         } catch (err: any) {
             console.error(err);
             setError(err.message || "An error occurred during login.");
@@ -116,9 +118,53 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
         }
     };
     return (<>
-        {loading && (
-            <Box sx={{ width: '100%' }}>
-                <LinearProgress />
+        {(loading || showSuccess) && (
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                zIndex: 9999
+            }}>
+                {loading && (
+                    <Fade in={loading} timeout={300}>
+                        <CircularProgress
+                            variant="indeterminate"
+                            disableShrink
+                            sx={{
+                                color: '#1a90ff',
+                                animationDuration: '550ms',
+                                [`& .${circularProgressClasses.circle}`]: {
+                                    strokeLinecap: 'round',
+                                },
+                            }}
+                            size={40}
+                            thickness={4}
+                        />
+                    </Fade>
+                )}
+
+                {showSuccess && (
+                    <Fade in={showSuccess} timeout={500}>
+                        <CheckCircle
+                            sx={{
+                                color: '#4caf50',
+                                fontSize: 48,
+                                '@keyframes scaleIn': {
+                                    '0%': { transform: 'scale(0)' },
+                                    '50%': { transform: 'scale(1.2)' },
+                                    '100%': { transform: 'scale(1)' }
+                                },
+                                animation: 'scaleIn 0.3s ease-out'
+                            }}
+                        />
+                    </Fade>
+                )}
             </Box>
         )}
         <div className={styles.bgImage}>

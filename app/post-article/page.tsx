@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Box, Button, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Button, Fade, Snackbar, TextField } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import styles from './page.module.css'
 import { useAppSelector } from "@/redux/hooks";
@@ -10,6 +10,7 @@ import CircularProgress, {
     CircularProgressProps,
 } from '@mui/material/CircularProgress';
 import { useRouter } from "next/navigation";
+import { CheckCircle } from "@mui/icons-material";
 
 interface AddArticleProps {
 
@@ -20,10 +21,11 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
     const currentUser = useAppSelector(state => state.user.currentUser);
     const router = useRouter();
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const [formdata, setformdata] = useState({
         title: '',
@@ -123,21 +125,26 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                 const errorData = await uploadResponse.json();
                 throw new Error(errorData.message || 'Failed to upload article');
             }
+            setTimeout(() => {
+                setLoading(false);
+                setShowSuccess(true);
+            }, 1000);
 
             setTimeout(() => {
                 router.push("/articles");
-                setOpen1(true);
-                setLoading(false);
             }, 2000);
         } catch (error: any) {
             console.error('Error submitting form:', error);
             setError(error.message || 'Failed to upload article');
 
             setTimeout(() => {
-                router.push("/articles");
                 setOpen(true);
                 setLoading(false);
             }, 1000);
+
+            setTimeout(() => {
+                router.push("/articles");
+            }, 2000);
         }
 
     }
@@ -152,7 +159,7 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
     };
 
     return (<>
-        {loading && (
+        {(loading || showSuccess) && (
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -165,19 +172,40 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.7)',
                 zIndex: 9999
             }}>
-                <CircularProgress
-                    variant="indeterminate"
-                    disableShrink
-                    sx={{
-                        color: '#1a90ff',
-                        animationDuration: '550ms',
-                        [`& .${circularProgressClasses.circle}`]: {
-                            strokeLinecap: 'round',
-                        },
-                    }}
-                    size={40}
-                    thickness={4}
-                />
+                {loading && (
+                    <Fade in={loading} timeout={300}>
+                        <CircularProgress
+                            variant="indeterminate"
+                            disableShrink
+                            sx={{
+                                color: '#1a90ff',
+                                animationDuration: '550ms',
+                                [`& .${circularProgressClasses.circle}`]: {
+                                    strokeLinecap: 'round',
+                                },
+                            }}
+                            size={40}
+                            thickness={4}
+                        />
+                    </Fade>
+                )}
+
+                {showSuccess && (
+                    <Fade in={showSuccess} timeout={500}>
+                        <CheckCircle
+                            sx={{
+                                color: '#4caf50',
+                                fontSize: 48,
+                                '@keyframes scaleIn': {
+                                    '0%': { transform: 'scale(0)' },
+                                    '50%': { transform: 'scale(1.2)' },
+                                    '100%': { transform: 'scale(1)' }
+                                },
+                                animation: 'scaleIn 0.3s ease-out'
+                            }}
+                        />
+                    </Fade>
+                )}
             </Box>
         )}
         <div className={styles.formCard}>
