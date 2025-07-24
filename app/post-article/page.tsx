@@ -1,10 +1,15 @@
 'use client';
-import { Alert, Button, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Button, Snackbar, TextField } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import styles from './page.module.css'
 import { useAppSelector } from "@/redux/hooks";
 import React from "react";
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress, {
+    circularProgressClasses,
+    CircularProgressProps,
+} from '@mui/material/CircularProgress';
+import { useRouter } from "next/navigation";
 
 interface AddArticleProps {
 
@@ -13,7 +18,12 @@ interface AddArticleProps {
 const AddArticle: FunctionComponent<AddArticleProps> = () => {
 
     const currentUser = useAppSelector(state => state.user.currentUser);
+    const router = useRouter();
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
 
     const [formdata, setformdata] = useState({
         title: '',
@@ -72,8 +82,24 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
     };
 
 
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    // Then modify the submit function and return section like this:
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setLoading(true);
+        // Validate form data
+        if (!formdata.title || !formdata.content) {
+            setError("Please fill in all required fields");
+            setOpen(true);
+            setLoading(false);
+            return;
+        }
+
+
         try {
             const formData = new FormData();
             formData.append('title', formdata.title);
@@ -81,7 +107,7 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
             formData.append('username', formdata.username);
             formData.append('date', new Date().toISOString());
             images.forEach((image) => {
-                formData.append('image', image); // backend expects 'image' as the key
+                formData.append('image', image);
             });
 
             const url = baseUrl + '/articles';
@@ -92,21 +118,30 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                 method: 'POST',
                 body: formData,
             });
+
             if (!uploadResponse.ok) {
                 const errorData = await uploadResponse.json();
-                console.error('Upload failed:', errorData);
-                throw new Error('Failed to upload article');
+                throw new Error(errorData.message || 'Failed to upload article');
             }
-        } catch (error) {
+
+            setTimeout(() => {
+                router.push("/articles");
+                setOpen1(true);
+                setLoading(false);
+            }, 2000);
+        } catch (error: any) {
             console.error('Error submitting form:', error);
+            setError(error.message || 'Failed to upload article');
+
+            setTimeout(() => {
+                router.push("/articles");
+                setOpen(true);
+                setLoading(false);
+            }, 1000);
         }
+
     }
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
-    };
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -117,6 +152,34 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
     };
 
     return (<>
+        {loading && (
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                zIndex: 9999
+            }}>
+                <CircularProgress
+                    variant="indeterminate"
+                    disableShrink
+                    sx={{
+                        color: '#1a90ff',
+                        animationDuration: '550ms',
+                        [`& .${circularProgressClasses.circle}`]: {
+                            strokeLinecap: 'round',
+                        },
+                    }}
+                    size={40}
+                    thickness={4}
+                />
+            </Box>
+        )}
         <div className={styles.formCard}>
             <div className={styles.title}>Post an Article</div>
             <form onSubmit={submit}>
@@ -166,8 +229,18 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                     </div>
                     <div className={styles.containerButtons}>
                         <Button variant="contained" type="submit" onClick={handleClick}>Submit</Button>
-                        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}
+                            sx={{
+                                zIndex: 1000,
+                                position: "fixed"
+                            }}>
+                            <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
+                                {error}
+                            </Alert>
+                        </Snackbar>
+
+                        <Snackbar open={open1} autoHideDuration={100000} onClose={handleClose}>
+                            <Alert onClose={handleClose} severity="success" sx={{ width: '500px' }}>
                                 Success!
                             </Alert>
                         </Snackbar>

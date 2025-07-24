@@ -16,8 +16,9 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
     const [loading, setLoading] = React.useState(false);
     const limit = 8;
 
+    // Single function to fetch articles
     const fetchArticles = useCallback(async (currentPage: number) => {
-        if (loading || !hasMore) return; // Prevent multiple simultaneous requests
+        if (loading || !hasMore) return;
 
         setLoading(true);
         try {
@@ -28,15 +29,25 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
             if (!response.ok) throw new Error("Failed to fetch articles");
             const data = await response.json();
 
+            // console.log("Fetching page", currentPage);
+            // console.log("Fetched data:", data);
+            // console.log("Articles returned:", data.data?.length);
+
             if (data.data && Array.isArray(data.data)) {
-                setArticles(prev => {
-                    const existingIds = new Set(prev.map(a => a._id));
-                    const newArticles = data.data.filter((a: any) => a._id && !existingIds.has(a._id));
-                    return [...prev, ...newArticles];
-                });
+                if (currentPage === 0) {
+                    // Initial load - replace articles
+                    setArticles(data.data);
+                } else {
+                    // Pagination - append articles
+                    setArticles(prev => {
+                        const existingIds = new Set(prev.map(a => a._id));
+                        const newArticles = data.data.filter((a: any) => a._id && !existingIds.has(a._id));
+                        return [...prev, ...newArticles];
+                    });
+                }
 
                 // Check if we've reached the end
-                if (data.data.length < limit) {
+                if (!data.data || data.data.length < limit) {
                     setHasMore(false);
                 }
             } else {
@@ -49,48 +60,39 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
         }
     }, [baseUrl, limit, loading, hasMore]);
 
-    // Load more articles by incrementing page
+    // Load more articles function
     const loadMoreArticles = useCallback(() => {
         if (!loading && hasMore) {
-            setPage(prev => prev + 1);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchArticles(nextPage);
         }
-    }, [loading, hasMore]);
+    }, [page, loading, hasMore, fetchArticles]);
 
     // Initial fetch
     useEffect(() => {
         fetchArticles(0);
-    }, []);
+    }, []); // Remove fetchArticles from dependency to avoid re-fetching
 
-    // Fetch articles when page changes (except initial load)
-    useEffect(() => {
-        if (page > 0) {
-            fetchArticles(page);
-        }
-    }, [page, fetchArticles]);
-
-    // Improved scroll handler with better throttling
+    // Scroll handler with throttling
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
         const handleScroll = () => {
-            // Clear existing timeout
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
-
-            // Set new timeout
             timeoutId = setTimeout(() => {
-                // Check if we're near the bottom
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const windowHeight = window.innerHeight;
                 const documentHeight = document.documentElement.scrollHeight;
 
-                const nearBottom = scrollTop + windowHeight >= documentHeight - 600;
+                const nearBottom = scrollTop + windowHeight >= documentHeight - 800;
 
                 if (nearBottom && hasMore && !loading) {
                     loadMoreArticles();
                 }
-            }, 100); // Reduced debounce time for better responsiveness
+            }, 200); // Increased debounce time to prevent too frequent calls
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -164,7 +166,6 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                     </div>
                 )}
             </div>
-
         </>
     );
 };

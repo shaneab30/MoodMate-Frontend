@@ -99,7 +99,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
             localStorage.setItem("user", JSON.stringify(userData));
             dispatch(login(userData));
 
-            console.log("Login success", userData);
+            // console.log("Login success", userData);
 
             setOpen1(true);
             setTimeout(() => {
