@@ -2,12 +2,10 @@
 import React, { useEffect } from 'react';
 import feather from 'feather-icons';
 import { Grid, Container, Box, Typography, Link } from '@mui/material';
-import './footer.css';
+import './footer.css'
+import { Twitter, Facebook, Instagram, Phone } from 'lucide-react';
 
 const Footer = () => {
-  useEffect(() => {
-    feather.replace(); // render icons
-  }, []);
 
   return (
     <footer id="footer">
@@ -33,9 +31,9 @@ const Footer = () => {
               <div className="footer-links">
                 <h4>Useful Links</h4>
                 <ul>
-                  <li><i data-feather="chevron-right" /> <Link href="/">Home</Link></li>
-                  <li><i data-feather="chevron-right" /> <Link href="/articles">Articles</Link></li>
-                  <li><i data-feather="chevron-right" /> <Link href="/mood-tracker">Mood Tracker</Link></li>
+                  <li><Link href="/">Home</Link></li>
+                  <li><Link href="/articles">Articles</Link></li>
+                  <li><Link href="/mood-tracker">Mood Tracker</Link></li>
                 </ul>
               </div>
             </Grid>
@@ -46,10 +44,10 @@ const Footer = () => {
                 <h4>Our Social Media</h4>
                 <p style={{ paddingBottom: '10px' }}>Follow us to get the latest updates</p>
                 <div className="social-links mt-3">
-                  <a href="#" className="twitter"><i data-feather="twitter" /></a>
-                  <a href="#" className="facebook"><i data-feather="facebook" /></a>
-                  <a href="https://www.instagram.com/bottlebank_lucky7" className="instagram"><i data-feather="instagram" /></a>
-                  <a href="#" className="whatsapp"><i data-feather="phone" /></a>
+                  <a href="#" className="twitter"><Twitter /></a>
+                  <a href="#" className="facebook"><Facebook /></a>
+                  <a href="https://www.instagram.com/bottlebank_lucky7" className="instagram"><Instagram /></a>
+                  <a href="#" className="whatsapp"><Phone /></a>
                 </div>
               </div>
             </Grid>
@@ -64,7 +62,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} <strong>MoodMate</strong>. All Rights Reserved
           </Typography>
           <Typography className="credits">
-            Designed by <a href="#">Shane</a>
+            Designed by <a href="https://www.linkedin.com/in/shane-baskara-71b97017a/">Shane Baskara</a>
           </Typography>
         </Container>
       </Box>

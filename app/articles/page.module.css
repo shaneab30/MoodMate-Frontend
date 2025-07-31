@@ -41,11 +41,11 @@
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   border-radius: 10px;
-  transition: box-shadow .5s;
+  transition: box-shadow 0.8s;
 }
 
 .card:hover .cardBorder {
-  box-shadow: 0 0 20px rgb(0, 0, 0, 0.65);
+  box-shadow: 0 0 25px rgb(0, 0, 0, 0.65);
 }
 
 .card .articlesTitle {

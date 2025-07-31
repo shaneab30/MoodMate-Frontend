@@ -122,7 +122,7 @@
 
 #footer .footer-top .footer-links ul a {
     color: #ffffff;
-    transition: 0.3s;
+    transition: 0.8s;
     display: inline-block;
     line-height: 1;
 }
@@ -144,7 +144,7 @@
     text-align: center;
     width: 36px;
     height: 36px;
-    transition: 0.3s;
+    transition: 0.8s;
 }
 
 #footer .footer-top .map-container {
@@ -159,7 +159,7 @@
 }
 
 #footer .footer-top .social-links a:hover {
-    background: #363636;
+    background: #000000;
     color: #fff;
     text-decoration: none;
 }
