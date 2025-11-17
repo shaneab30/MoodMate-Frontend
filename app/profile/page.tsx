@@ -1,11 +1,19 @@
 'use client';
-import { Alert, Avatar, Box, Button, ButtonBase, FormControlLabel, IconButton, InputAdornment, LinearProgress, Snackbar, TextField } from "@mui/material";
+import {
+    Alert, Avatar, Box, Button, ButtonBase, Card, CardContent,
+    FormControlLabel, IconButton, InputAdornment, LinearProgress,
+    Snackbar, TextField, Grid, Typography, Divider, Container,
+    Paper, Fade
+} from "@mui/material";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useState } from "react";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from "@/redux/features/userSlice";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+    Visibility, VisibilityOff, CameraAlt, Person,
+    Email, Lock, Badge, Cake
+} from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { get } from "http";
 // import { Checkbox } from "@/components/ui/checkbox"
@@ -306,222 +314,376 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         <div className={styles.container}>
             <div className={styles.headerProfile}>
                 <div className={styles.title}>
-                    <h1 >Profile</h1>
+                    <Typography variant="h3" component="h1" fontWeight="700" gutterBottom sx={{ color: '#1a1a1a' }}>
+                        Profile
+                    </Typography>
                 </div>
                 <div className={styles.description}>
-                    <p>
+                    <Typography variant="body1" sx={{ color: '#666', fontSize: '1.05rem' }}>
                         Welcome to your profile page! Here you can view and manage your account details.
-                        If you need to update your information, please contact support.
-                    </p>
+                    </Typography>
                 </div>
                 <div className={styles.contentProfile}>
-                    <div className={styles.avatar}>
-                        <ButtonBase
-                            component="label"
-                            role={undefined}
-                            tabIndex={-1} // prevent label from tab focus
-                            aria-label="Avatar image"
-                            sx={{
-                                borderRadius: '40px',
-                                '&:has(:focus-visible)': {
-                                    outline: '2px solid',
-                                    outlineOffset: '2px',
-                                },
-                            }}
-                        >
-                            <Avatar sx={{ width: 100, height: 100 }} alt={user?.username} src={avatarSrc} />
-                            <input
-                                type="file"
-                                accept="image/*"
-                                style={{
-                                    border: 0,
-                                    clip: 'rect(0 0 0 0)',
-                                    height: '1px',
-                                    margin: '-1px',
-                                    overflow: 'hidden',
-                                    padding: 0,
-                                    position: 'absolute',
-                                    whiteSpace: 'nowrap',
-                                    width: '1px',
-                                }}
-                                onChange={handleAvatarChange}
-                            />
-                        </ButtonBase>
-                    </div>
+                    <Fade in timeout={500}>
+                        <CardContent sx={{ p: 1.5 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
+                                {/* Avatar with Upload */}
+                                <Box sx={{ position: 'relative' }}>
+                                    <ButtonBase
+                                        component="label"
+                                        sx={{
+                                            borderRadius: '50%',
+                                            position: 'relative',
+                                            transition: 'transform 0.2s',
+                                            '&:hover': {
+                                                transform: 'scale(1.05)',
+                                            },
+                                            '&:hover .avatar-overlay': {
+                                                opacity: 1,
+                                            },
+                                        }}
+                                    >
+                                        <Avatar
+                                            sx={{
+                                                width: 120,
+                                                height: 120,
+                                                border: '4px solid white',
+                                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                            }}
+                                            alt={user?.username}
+                                            src={avatarSrc}
+                                        />
+                                        <Box
+                                            className="avatar-overlay"
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '100%',
+                                                borderRadius: '50%',
+                                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                opacity: 0,
+                                                transition: 'opacity 0.3s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <CameraAlt sx={{ color: 'white', fontSize: 36 }} />
+                                        </Box>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'none' }}
+                                            onChange={handleAvatarChange}
+                                        />
+                                    </ButtonBase>
+                                </Box>
 
-                    <div className={styles.textProfile}>
-                        <div style={{ fontWeight: "bold" }}>{user?.username || "Guest"} </div>
-                        <div>{user?.firstname} {user?.lastname}</div>
-                        <div>Email: {user?.email}</div>
-                    </div>
+                                {/* User Info */}
+                                <Box sx={{ flex: 1 }}>
+                                    <Typography variant="h5" fontWeight="700" gutterBottom sx={{ color: '#1a1a1a' }}>
+                                        {user?.username || "Guest"}
+                                    </Typography>
+                                    <Typography variant="h6" sx={{ color: '#444', mb: 1, fontWeight: 400 }}>
+                                        {user?.firstname} {user?.lastname}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Email sx={{ fontSize: 20, color: '#666' }} />
+                                            <Typography variant="body2" sx={{ color: '#666' }}>
+                                                {user?.email}
+                                            </Typography>
+                                        </Box>
+                                        {user?.age && (
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                <Cake sx={{ fontSize: 20, color: '#666' }} />
+                                                <Typography variant="body2" sx={{ color: '#666' }}>
+                                                    {user.age} years old
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Fade>
                 </div>
                 <div className={styles.update}>
-                    <form onSubmit={updateProfile} >
-                        <TextField
-                            id="firstname"
-                            label="Firstname"
-                            variant="standard"
-                            fullWidth
-                            value={formData.firstname}
-                            onChange={(e) => setformData({ ...formData, firstname: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                        />
-                        <TextField
-                            id="lastname"
-                            label="Lastname"
-                            variant="standard"
-                            fullWidth
-                            value={formData.lastname}
-                            onChange={(e) => setformData({ ...formData, lastname: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                        />
-                        <TextField
-                            id="age"
-                            label="Age"
-                            variant="standard"
-                            fullWidth
-                            value={formData.age}
-                            onChange={(e) => setformData({ ...formData, age: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                        />
-                        <TextField
-                            id="username"
-                            label="Username"
-                            variant="standard"
-                            fullWidth
-                            value={formData.username}
-                            onChange={(e) => setformData({ ...formData, username: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                            error={!!usernameError}
-                            helperText={usernameError}
-                        />
-                        <TextField
-                            id="email"
-                            label="Email"
-                            variant="standard"
-                            fullWidth
-                            value={formData.email}
-                            onChange={(e) => setformData({ ...formData, email: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                            type="email"
-                            error={!!emailError}
-                            helperText={emailError}
-                        />
-                        <TextField
-                            id="password"
-                            label="Retype Password to Confirm Changes"
-                            variant="standard"
-                            fullWidth
-                            value={formData.password}
-                            onChange={(e) => { setformData({ ...formData, password: e.target.value }); handlePasswordChange(e as React.ChangeEvent<HTMLInputElement>); }}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                            type={showPassword ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            style={{ paddingRight: "20px" }}
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
+                    <Fade in timeout={800}>
+                        {/* <Card
+                            elevation={0}
+                            sx={{
+                                borderRadius: 3,
+                                border: '1px solid rgba(0,0,0,0.08)',
+                                background: 'rgba(255, 255, 255, 0.7)',
+                                backdropFilter: 'blur(10px)'
                             }}
-                            error={!!passwordError}
-                            helperText={passwordError}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={changePassword}
-                                    onChange={handleCheckboxChange}
-                                />
-                            }
-                            label="I want to change my password"
-                        />
+                        > */}
+                        <CardContent sx={{ p: 4 }}>
+                            <Typography variant="h6" fontWeight="600" gutterBottom sx={{ mb: 3, color: '#1a1a1a' }}>
+                                Edit Profile Information
+                            </Typography>
 
+                            <form onSubmit={updateProfile}>
+                                <Grid container spacing={3}>
+                                    {/* Name Fields */}
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="First Name"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={formData.firstname}
+                                            onChange={(e) => setformData({ ...formData, firstname: e.target.value })}
+                                            required
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Badge sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="Last Name"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={formData.lastname}
+                                            onChange={(e) => setformData({ ...formData, lastname: e.target.value })}
+                                            required
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Badge sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
 
-                        <TextField
-                            id="newPassword"
-                            label="New Password"
-                            variant="standard"
-                            fullWidth
-                            value={formData.newPassword}
-                            onChange={(e) => { setformData({ ...formData, newPassword: e.target.value }) }}
-                            InputLabelProps={{ shrink: true }}
-                            disabled={!changePassword}
-                            required={changePassword}
-                            type={showNewPassword ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            disabled={!changePassword}
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowNewPassword}
-                                            onMouseDown={handleMouseDownNewPassword}
-                                            edge="end"
-                                            style={{ paddingRight: "20px" }}
+                                    {/* Username and Age */}
+                                    <Grid item xs={12} sm={8}>
+                                        <TextField
+                                            label="Username"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={formData.username}
+                                            onChange={(e) => setformData({ ...formData, username: e.target.value })}
+                                            required
+                                            error={!!usernameError}
+                                            helperText={usernameError}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Person sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label="Age"
+                                            variant="outlined"
+                                            fullWidth
+                                            type="number"
+                                            value={formData.age}
+                                            onChange={(e) => setformData({ ...formData, age: e.target.value })}
+                                            required
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Cake sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+
+                                    {/* Email */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            label="Email Address"
+                                            variant="outlined"
+                                            fullWidth
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setformData({ ...formData, email: e.target.value })}
+                                            required
+                                            error={!!emailError}
+                                            helperText={emailError}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Email sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+
+                                    {/* Security Section */}
+                                    <Grid item xs={12}>
+                                        <Divider sx={{ my: 2 }} />
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                                            <Lock sx={{ color: '#666' }} />
+                                            <Typography variant="h6" fontWeight="600" sx={{ color: '#1a1a1a' }}>
+                                                Security
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    {/* Current Password */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            label="Current Password (Required to Save Changes)"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={formData.password}
+                                            onChange={(e) => {
+                                                setformData({ ...formData, password: e.target.value });
+                                                handlePasswordChange(e as React.ChangeEvent<HTMLInputElement>);
+                                            }}
+                                            required
+                                            type={showPassword ? 'text' : 'password'}
+                                            error={!!passwordError}
+                                            helperText={passwordError}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Lock sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            onClick={handleClickShowPassword}
+                                                            onMouseDown={handleMouseDownPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+
+                                    {/* Change Password Checkbox */}
+                                    <Grid item xs={12}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={changePassword}
+                                                    onChange={handleCheckboxChange}
+                                                    color="primary"
+                                                />
+                                            }
+                                            label="Change my password"
+                                        />
+                                    </Grid>
+
+                                    {/* New Password Fields */}
+                                    {changePassword && (
+                                        <>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    label="New Password"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    value={formData.newPassword}
+                                                    onChange={(e) => setformData({ ...formData, newPassword: e.target.value })}
+                                                    required={changePassword}
+                                                    type={showNewPassword ? 'text' : 'password'}
+                                                    error={!!newPasswordError}
+                                                    helperText={newPasswordError || "Minimum 6 characters"}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <Lock sx={{ color: '#666' }} />
+                                                            </InputAdornment>
+                                                        ),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    onClick={handleClickShowNewPassword}
+                                                                    onMouseDown={handleMouseDownPassword}
+                                                                    edge="end"
+                                                                >
+                                                                    {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    label="Confirm New Password"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    value={formData.newPassword2}
+                                                    onChange={(e) => setformData({ ...formData, newPassword2: e.target.value })}
+                                                    required={changePassword}
+                                                    type={showNewPassword2 ? 'text' : 'password'}
+                                                    error={!!newPasswordError}
+                                                    helperText={newPasswordError}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <Lock sx={{ color: '#666' }} />
+                                                            </InputAdornment>
+                                                        ),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    onClick={handleClickShowNewPassword2}
+                                                                    onMouseDown={handleMouseDownPassword}
+                                                                    edge="end"
+                                                                >
+                                                                    {showNewPassword2 ? <Visibility /> : <VisibilityOff />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </Grid>
+                                        </>
+                                    )}
+
+                                    {/* Submit Button */}
+                                    <Grid item xs={12}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            size="large"
+                                            fullWidth
+                                            disabled={loading}
+                                            sx={{
+                                                mt: 2,
+                                                py: 1.5,
+                                                fontSize: '1.05rem',
+                                                fontWeight: 600,
+                                                textTransform: 'none',
+                                                borderRadius: 2,
+                                                boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
+                                                '&:hover': {
+                                                    boxShadow: '0 6px 16px rgba(25, 118, 210, 0.4)',
+                                                }
+                                            }}
                                         >
-                                            {showNewPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                            error={!!newPasswordError}
-                            helperText={newPasswordError}
-                        />
-
-                        <TextField
-                            id="retypeNewPassword"
-                            label="Retype New Password"
-                            variant="standard"
-                            fullWidth
-                            value={formData.newPassword2}
-                            onChange={(e) => { setformData({ ...formData, newPassword2: e.target.value }) }}
-                            InputLabelProps={{ shrink: true }}
-                            disabled={!changePassword}
-                            required={changePassword}
-                            type={showNewPassword2 ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            disabled={!changePassword}
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowNewPassword2}
-                                            onMouseDown={handleMouseDownNewPassword2}
-                                            edge="end"
-                                            style={{ paddingRight: "20px" }}
-                                        >
-                                            {showNewPassword2 ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                            error={!!newPasswordError}
-                            helperText={newPasswordError}
-                        />
-
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            style={{ marginTop: '20px' }}
-                        >
-                            Update Profile
-                        </Button>
-                    </form>
+                                            {loading ? 'Saving...' : 'Save Changes'}
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                        </CardContent>
+                        {/* </Card> */}
+                    </Fade>
                 </div>
                 <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
