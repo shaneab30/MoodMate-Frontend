@@ -107,64 +107,77 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
 
     return (
         <>
-            <div className={styles.content}>
-                {articles.length > 0 ? (
-                    <Grid container spacing={2} style={{ padding: "50px 100px" }}>
-                        {articles.map((article) => (
-                            <Grid item xs={6} lg={3} key={article._id} className={styles.card}>
-                                <Link href={`/user/${article.username}/${article._id}`}>
-                                    <div className={styles.cardBorder}>
-                                        <img
-                                            src={
-                                                Array.isArray(article.image)
-                                                    ? `${baseUrl}/articles/images/${article.image[0]}`
-                                                    : `${baseUrl}/articles/images/${article.image}`
-                                            }
-                                            alt={article.title}
-                                            style={{
-                                                borderRadius: "10px 10px 0 0",
-                                                height: "200px",
-                                                width: "100%",
-                                                objectFit: "cover"
-                                            }}
-                                            loading="lazy"
-                                        />
-                                        <div className={styles.articlesTitle}>
-                                            <p>{article.title}</p>
+            <div className={styles.pageWrapper}>
+                <div className={styles.header}>
+                    <h1 className={styles.pageTitle}>Discover Articles</h1>
+                    <p className={styles.pageSubtitle}>
+                        Explore insights and stories from our community
+                    </p>
+                </div>
+
+                <div className={styles.content}>
+                    {articles.length > 0 ? (
+                        <Grid container spacing={3} className={styles.articlesGrid}>
+                            {articles.map((article) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={article._id} className={styles.card}>
+                                    <Link href={`/user/${article.username}/${article._id}`} className={styles.cardLink}>
+                                        <div className={styles.cardBorder}>
+                                            <div className={styles.imageWrapper}>
+                                                <img
+                                                    src={
+                                                        Array.isArray(article.image)
+                                                            ? `${baseUrl}/articles/images/${article.image[0]}`
+                                                            : `${baseUrl}/articles/images/${article.image}`
+                                                    }
+                                                    alt={article.title}
+                                                    className={styles.articleImage}
+                                                    loading="lazy"
+                                                />
+                                                <div className={styles.imageOverlay}></div>
+                                            </div>
+                                            <div className={styles.cardContent}>
+                                                <h3 className={styles.articlesTitle}>{article.title}</h3>
+                                                <p className={styles.articlesContent}>
+                                                    {article.content.length > 100
+                                                        ? article.content.substring(0, 100) + '...'
+                                                        : article.content}
+                                                </p>
+                                                <div className={styles.articlesFooter}>
+                                                    <div className={styles.articlesAuthor}>
+                                                        <span className={styles.authorName}>{article.username}</span>
+                                                        <span className={styles.articleDate}>
+                                                            {new Date(article.date).toLocaleDateString('en-US', {
+                                                                month: 'short',
+                                                                day: 'numeric',
+                                                                year: 'numeric'
+                                                            })}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={styles.articlesContent}>
-                                            <p>
-                                                {article.content.length > 100
-                                                    ? article.content.substring(0, 100) + '...'
-                                                    : article.content}
-                                            </p>
-                                        </div>
-                                        <div className={styles.articlesAuthor}>
-                                            <p>
-                                                {article.username} -{" "}
-                                                <span>{new Date(article.date).toLocaleDateString()}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </Grid>
-                        ))}
-                    </Grid>
-                ) : (
-                    !loading && <div className={styles.center}>No articles found</div>
-                )}
-                {loading && (
-                    <div style={{
-                        textAlign: "center",
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "center",
-                        width: "100%",
-                        padding: "20px"
-                    }}>
-                        <CircularProgress size={50} />
-                    </div>
-                )}
+                                    </Link>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        !loading && (
+                            <div className={styles.emptyState}>
+                                <div className={styles.emptyStateIcon}>📚</div>
+                                <h2 className={styles.emptyStateTitle}>No Articles Yet</h2>
+                                <p className={styles.emptyStateText}>
+                                    Check back soon for new content from our community
+                                </p>
+                            </div>
+                        )
+                    )}
+                    {loading && (
+                        <div className={styles.loadingWrapper}>
+                            <CircularProgress size={50} thickness={4} />
+                            <p className={styles.loadingText}>Loading articles...</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     );
