@@ -1,7 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { user } from "./features/userSlice";
 import storage from 'redux-persist/lib/storage'; 
-import { persistStore, persistReducer } from 'redux-persist';
+import { 
+  persistStore, 
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 
 const persistConfig = {
   key: 'user',
@@ -14,6 +23,12 @@ export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
   devTools: process.env.NODE_ENV !== "production",
 });
 

@@ -204,7 +204,7 @@ const user: FunctionComponent<userProps> = ({ params }) => {
                 {articles.length > 0 ? (
                     <Grid container spacing={2} style={{ padding: "50px 100px" }}>
                         {articles.map((article) => (
-                            <Grid item xs={6} lg={3} key={article._id} className={styles.card}>
+                            <Grid size={{ xs: 12, md: 6, lg: 3 }} key={article._id} className={styles.card}>
                                 <Link href={`/user/${username}/${article._id}`} className={styles.cardLink}>
                                     <div className={styles.cardBorder}>
                                         <img

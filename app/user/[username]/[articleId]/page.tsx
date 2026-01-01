@@ -8,13 +8,15 @@ import React from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 interface ArticleIdPageProps {
-    params: {
+    params: Promise<{
         username: string;
         articleId: string;
-    };
+    }>;
 }
 
 const ArticleIdPage: FunctionComponent<ArticleIdPageProps> = ({ params }) => {
+    // Unwrap the params Promise
+    const { username, articleId } = use(params);
 
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const [avatarSrc, setAvatarSrc] = React.useState<string | undefined>(undefined);
@@ -22,7 +24,6 @@ const ArticleIdPage: FunctionComponent<ArticleIdPageProps> = ({ params }) => {
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<any>(null);
     const [images, setImages] = useState<ReactImageGalleryItem[]>([]);
-    const { username, articleId } = params;
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -67,7 +68,6 @@ const ArticleIdPage: FunctionComponent<ArticleIdPageProps> = ({ params }) => {
         }
     };
 
-
     const getAvatar = async () => {
         if (!profile || !profile.data || !profile.data[0] || !profile.data[0].profilePicture) {
             console.log('No profile or profile picture available');
@@ -91,16 +91,10 @@ const ArticleIdPage: FunctionComponent<ArticleIdPageProps> = ({ params }) => {
         }
     };
 
-
-
-
     useEffect(() => {
         fetchArticlesData();
         fetchProfile();
     }, []);
-
-
-
 
     useEffect(() => {
         if (profile && profile.data && profile.data[0]) {

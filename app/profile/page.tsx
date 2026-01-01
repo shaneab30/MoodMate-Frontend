@@ -430,7 +430,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                             <form onSubmit={updateProfile}>
                                 <Grid container spacing={3}>
                                     {/* Name Fields */}
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid size={{ xs: 12, md: 6, lg: 4 }}>
                                         <TextField
                                             label="First Name"
                                             variant="outlined"
@@ -447,7 +447,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                             }}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid size={{ xs: 12, md: 6, lg: 4 }}>
                                         <TextField
                                             label="Last Name"
                                             variant="outlined"
@@ -466,7 +466,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     </Grid>
 
                                     {/* Username and Age */}
-                                    <Grid item xs={12} sm={8}>
+                                    <Grid size={{ xs: 12, md: 6, lg: 4 }}>
                                         <TextField
                                             label="Username"
                                             variant="outlined"
@@ -485,7 +485,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                             }}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={4}>
+                                    <Grid size={{ xs: 12, sm: 4 }}>
                                         <TextField
                                             label="Age"
                                             variant="outlined"
@@ -505,7 +505,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     </Grid>
 
                                     {/* Email */}
-                                    <Grid item xs={12}>
+                                    <Grid size={{ xs: 12 }}>
                                         <TextField
                                             label="Email Address"
                                             variant="outlined"
@@ -527,7 +527,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     </Grid>
 
                                     {/* Security Section */}
-                                    <Grid item xs={12}>
+                                    <Grid size={{ xs: 12 }}>
                                         <Divider sx={{ my: 2 }} />
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                                             <Lock sx={{ color: '#666' }} />
@@ -538,7 +538,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     </Grid>
 
                                     {/* Current Password */}
-                                    <Grid item xs={12}>
+                                    <Grid size={{ xs: 12 }}>
                                         <TextField
                                             label="Current Password (Required to Save Changes)"
                                             variant="outlined"
@@ -574,7 +574,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     </Grid>
 
                                     {/* Change Password Checkbox */}
-                                    <Grid item xs={12}>
+                                    <Grid size={{ xs: 12 }}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -590,7 +590,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     {/* New Password Fields */}
                                     {changePassword && (
                                         <>
-                                            <Grid item xs={12} sm={6}>
+                                            <Grid size={{ xs: 12, sm: 6 }}>
                                                 <TextField
                                                     label="New Password"
                                                     variant="outlined"
@@ -621,7 +621,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                                     }}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12} sm={6}>
+                                            <Grid size={{ xs: 12, sm: 6 }}>
                                                 <TextField
                                                     label="Confirm New Password"
                                                     variant="outlined"
@@ -656,7 +656,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                                     )}
 
                                     {/* Submit Button */}
-                                    <Grid item xs={12}>
+                                    <Grid size={{ xs: 12 }}>
                                         <Button
                                             type="submit"
                                             variant="contained"

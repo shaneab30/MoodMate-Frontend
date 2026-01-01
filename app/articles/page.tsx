@@ -119,7 +119,7 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                     {articles.length > 0 ? (
                         <Grid container spacing={3} className={styles.articlesGrid}>
                             {articles.map((article) => (
-                                <Grid item xs={12} sm={6} md={4} lg={3} key={article._id} className={styles.card}>
+                                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={article._id} className={styles.card}>
                                     <Link href={`/user/${article.username}/${article._id}`} className={styles.cardLink}>
                                         <div className={styles.cardBorder}>
                                             <div className={styles.imageWrapper}>

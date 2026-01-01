@@ -13,7 +13,7 @@ const Footer = () => {
         <Container>
           <Grid container spacing={4}>
             {/* Contact Info */}
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid size={{ xs: 12, md: 6, lg: 4 }}>
               <div className="footer-contact">
                 <h3>MoodMate</h3>
                 <p>
@@ -27,7 +27,7 @@ const Footer = () => {
             </Grid>
 
             {/* Useful Links */}
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid size={{ xs: 12, md: 6, lg: 4 }}>
               <div className="footer-links">
                 <h4>Useful Links</h4>
                 <ul>
@@ -39,7 +39,7 @@ const Footer = () => {
             </Grid>
 
             {/* Social Media */}
-            <Grid item xs={12} md={12} lg={4}>
+            <Grid size={{ xs: 12, md: 12, lg: 4 }}>
               <div className="footer-links">
                 <h4>Our Social Media</h4>
                 <p style={{ paddingBottom: '10px' }}>Follow us to get the latest updates</p>
