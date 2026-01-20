@@ -12,13 +12,8 @@
 }
 
 .card {
-    background-color: rgb(244, 232, 255);
-    box-shadow:
-        0 0 5px rgba(168, 85, 247, 0.2),
-        /* purple */
-        0 0 15px rgba(236, 72, 153, 0.2),
-        /* pink */
-        0 0 30px rgba(168, 85, 247, 0.2);
+    background-color: #333446;
+    box-shadow: 24px rgba(127, 140, 170, 0.2);
     /* purple again */
     display: flex;
     flex-direction: row;
@@ -31,16 +26,17 @@
 
 .card:hover {
     box-shadow:
-        0 0 5px rgba(168, 85, 247, 0.5),
-        0 0 20px rgba(236, 72, 153, 0.4),
-        0 0 40px rgba(168, 85, 247, 0.5);
-    /* transform: translateY(-3px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px); */
+        0 25px 25px rgba(0, 0, 0, 0.3),
+        /* depth shadow */
+        0 10px 10px rgba(0, 0, 0, 0.2),
+        /* mid shadow */
+        0 0 25px rgba(127, 140, 170, 0.4);
+    /* soft glow */
 }
 
+
 .text {
-    color: black;
+    color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     width: 55vh;
@@ -58,18 +54,18 @@
     justify-content: center;
     align-items: center;
     /* width: 60vh; */
-    background-color: rgb(244, 232, 255);
+    background-color: #333446;
     margin: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, .25); */
     border-radius: 15px;
     /* transition: box-shadow .5s; */
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 .image p {
     max-width: 450px;
     display: flex;
-    color: black;
+    color: rgb(255, 255, 255);
     padding: 40px;
     text-align: center;
 }
@@ -84,7 +80,7 @@
 } */
 
 .button {
-    padding-top:10px ;
+    padding-top: 10px;
     /* display: flex;  */
     width: 100%;
     /* justify-content: center;

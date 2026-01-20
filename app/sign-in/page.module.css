@@ -21,14 +21,8 @@
 }
 
 .card {
-    background-color: rgb(244, 232, 255);
-    box-shadow:
-        0 0 5px rgba(168, 85, 247, 0.2),
-        /* purple */
-        0 0 15px rgba(236, 72, 153, 0.2),
-        /* pink */
-        0 0 30px rgba(168, 85, 247, 0.2);
-    /* purple again */
+    background-color: #333446;
+    box-shadow: 24px rgba(127, 140, 170, 0.2);
     display: flex;
     flex-direction: column;
     width: 60vh;
@@ -36,16 +30,17 @@
     padding: 20px;
     border-radius: 15px;
     transition: box-shadow 0.5s, transform 0.3s;
+    color: white;
 }
 
 .card:hover {
     box-shadow:
-        0 0 5px rgba(168, 85, 247, 0.5),
-        0 0 20px rgba(236, 72, 153, 0.4),
-        0 0 40px rgba(168, 85, 247, 0.5);
-    /* transform: translateY(-4px); */
-    /* border: 1px solid rgba(255, 255, 255, 0.3); */
-    /* backdrop-filter: blur(1000000px); */
+        0 25px 25px rgba(0, 0, 0, 0.3),
+        /* depth shadow */
+        0 10px 10px rgba(0, 0, 0, 0.2),
+        /* mid shadow */
+        0 0 25px rgba(127, 140, 170, 0.4);
+    /* soft glow */
 }
 
 
@@ -68,7 +63,7 @@
 }
 
 .register {
-    color: black;
+    color: rgb(255, 255, 255);
     padding-bottom: 20px;
     padding-left: 20px;
 }

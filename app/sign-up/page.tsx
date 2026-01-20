@@ -114,6 +114,35 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
         }
     };
 
+    const whiteTextFieldSx = {
+        input: { color: 'white' },
+        label: { color: 'white' },
+        '& label.Mui-focused': { color: 'white' },
+
+        '& .MuiInput-underline:before': {
+            borderBottomColor: 'rgba(255,255,255,0.7)',
+        },
+        '& .MuiInput-underline:hover:before': {
+            borderBottomColor: 'white',
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: 'white',
+        },
+
+        '& .MuiIconButton-root': {
+            color: 'white',
+        },
+
+        '& .MuiFormHelperText-root': {
+            color: 'white',
+        },
+
+        '& .MuiFormHelperText-root.Mui-error': {
+            color: '#ffb4b4',
+        },
+    };
+
+
 
     return (
         <>
@@ -175,30 +204,85 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                             <p>Already have an account?&nbsp;
                                 <Link href="/sign-in" style={{ textDecoration: "underline" }}>Sign In</Link>
                             </p>
-                            <TextField id="firstname" label="Firstname" variant="standard" required value={formData.firstname} onChange={(e) => setformData({ ...formData, firstname: e.target.value })} />
-                            <TextField id="lastname" label="Lastname" variant="standard" required value={formData.lastname} onChange={(e) => setformData({ ...formData, lastname: e.target.value })} />
-                            <TextField id="username" label="Username" variant="standard" required value={formData.username} onChange={(e) => setformData({ ...formData, username: e.target.value })} />
-                            <TextField id="email" label="Email" variant="standard" type="email" required value={formData.email} onChange={(e) => setformData({ ...formData, email: e.target.value })} />
-                            <TextField id="password" label="Password" variant="standard" required type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handlePasswordChange} InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            style={{ paddingRight: "20px" }}
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
+                            <TextField
+                                id="firstname"
+                                label="Firstname"
+                                variant="standard"
+                                required
+                                value={formData.firstname}
+                                onChange={(e) => setformData({ ...formData, firstname: e.target.value })}
+                                sx={whiteTextFieldSx}
+                            />
+
+                            <TextField
+                                id="lastname"
+                                label="Lastname"
+                                variant="standard"
+                                required
+                                value={formData.lastname}
+                                onChange={(e) => setformData({ ...formData, lastname: e.target.value })}
+                                sx={whiteTextFieldSx}
+                            />
+
+                            <TextField
+                                id="username"
+                                label="Username"
+                                variant="standard"
+                                required
+                                value={formData.username}
+                                onChange={(e) => setformData({ ...formData, username: e.target.value })}
+                                sx={whiteTextFieldSx}
+                            />
+
+                            <TextField
+                                id="email"
+                                label="Email"
+                                variant="standard"
+                                type="email"
+                                required
+                                value={formData.email}
+                                onChange={(e) => setformData({ ...formData, email: e.target.value })}
+                                sx={whiteTextFieldSx}
+                            />
+
+                            <TextField
+                                id="password"
+                                label="Password"
+                                variant="standard"
+                                required
+                                type={showPassword ? 'text' : 'password'}
+                                value={formData.password}
+                                onChange={handlePasswordChange}
+                                sx={whiteTextFieldSx}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                                 error={!!error}
-                                helperText={error || alertInfo} />
-                            <TextField id="age" label="Age" variant="standard" required value={formData.age} onChange={(e) => setformData({ ...formData, age: e.target.value })} />
+                                helperText={error || alertInfo}
+                            />
+
+                            <TextField
+                                id="age"
+                                label="Age"
+                                variant="standard"
+                                required
+                                value={formData.age}
+                                onChange={(e) => setformData({ ...formData, age: e.target.value })}
+                                sx={whiteTextFieldSx}
+                            />
                             <div className={styles.button}>
-                                <Button variant="contained" type="submit" style={{ width: "100%", borderRadius: "18px", height: "45px", backgroundColor: "black" }}>Sign Up</Button>
+                                <Button variant="contained" type="submit" style={{ width: "100%", borderRadius: "18px", height: "45px", backgroundColor: "#7F8CAA", fontWeight: "bold" }}>Sign Up</Button>
                                 <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}>
                                     <Alert onClose={handleClose} severity="error" sx={{ width: '500px' }}>
                                         {errorSignUp}

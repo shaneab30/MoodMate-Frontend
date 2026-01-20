@@ -179,7 +179,23 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                                 variant="standard"
                                 required
                                 value={formData.username}
-                                onChange={(e) => setformData({ ...formData, username: e.target.value })}
+                                onChange={(e) =>
+                                    setformData({ ...formData, username: e.target.value })
+                                }
+                                sx={{
+                                    input: { color: 'white' }, // text
+                                    label: { color: 'white' }, // label
+                                    '& label.Mui-focused': { color: 'white' },
+                                    '& .MuiInput-underline:before': {
+                                        borderBottomColor: 'white',
+                                    },
+                                    '& .MuiInput-underline:hover:before': {
+                                        borderBottomColor: 'white',
+                                    },
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'white',
+                                    },
+                                }}
                             />
                             <TextField
                                 id="password"
@@ -189,15 +205,30 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                                 type={showPassword ? 'text' : 'password'}
                                 value={formData.password}
                                 onChange={handlePasswordChange}
+                                sx={{
+                                    input: { color: 'white' },
+                                    label: { color: 'white' },
+                                    '& label.Mui-focused': { color: 'white' },
+                                    '& .MuiInput-underline:before': {
+                                        borderBottomColor: 'white',
+                                    },
+                                    '& .MuiInput-underline:hover:before': {
+                                        borderBottomColor: 'white',
+                                    },
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'white',
+                                    },
+                                    '& .MuiIconButton-root': {
+                                        color: 'white',
+                                    },
+                                }}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
                                             <IconButton
-                                                aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
-                                                style={{ paddingRight: "20px" }}
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
@@ -207,7 +238,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                             />
                         </div>
                         <div className={styles.button}>
-                            <Button variant="contained" type="submit" style={{ backgroundColor: "black", width: "24%" }}>Sign In</Button>
+                            <Button variant="contained" type="submit" style={{ backgroundColor: "#7F8CAA", width: "24%", fontWeight: "bold", borderRadius: "14px" }}>Sign In</Button>
                             <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}
                                 sx={{
                                     zIndex: 1000,
