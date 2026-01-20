@@ -112,7 +112,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
             position="static"
             className="navbar"
             style={{
-                background: "rgb(178, 105, 255)",
+                background: "#333446",
                 boxShadow: "none"
             }}
         >

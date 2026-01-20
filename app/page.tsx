@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
-import { motion, LazyMotion, domAnimation } from "motion/react";
+import { motion, LazyMotion, domAnimation, rgba } from "motion/react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 interface HomePageProps {
@@ -75,7 +75,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                   style={{
                     fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
                     fontWeight: 800,
-                    background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                    background: 'rgba(127, 140, 170)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -92,7 +92,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                   style={{
                     fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
                     fontWeight: 600,
-                    background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                    background: 'rgba(127, 140, 170)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -110,23 +110,23 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                     padding: '16px 36px',
                     fontSize: '1.1rem',
                     fontWeight: 600,
-                    background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                    background: 'rgba(127, 140, 170)',
                     color: 'white',
                     border: 'none',
                     borderRadius: '50px',
                     cursor: 'pointer',
-                    boxShadow: '0 10px 30px rgba(168, 85, 247, 0.3)',
+                    boxShadow: '0 10px 30px rgba(127, 140, 170, 0.3)',
                     transition: 'all 0.3s ease',
                     transform: 'scale(1)'
                   }}
                     onClick={() => window.location.href = "/sign-up"}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 15px 40px rgba(168, 85, 247, 0.4)';
+                      e.currentTarget.style.transform = 'scale(1.05) translateY(-3px)';
+                      e.currentTarget.style.boxShadow = '0 15px 40px rgba(127, 140, 170, 0)';
                     }}
                     onMouseOut={(e) => {
                       e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.boxShadow = '0 10px 30px rgba(168, 85, 247, 0.3)';
+                      e.currentTarget.style.boxShadow = '0 10px 30px rgba(127, 140, 170, 0)';
                     }}
                   >
                     Get Started
@@ -143,7 +143,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                 <div style={{
                   position: 'absolute',
                   inset: '-20px',
-                  background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                  
                   borderRadius: '30px',
                   filter: 'blur(40px)',
                   opacity: 0.3,
@@ -156,7 +156,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                     width: '100%',
                     maxWidth: '500px',
                     borderRadius: '30px',
-                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.15)',
+                
                     display: 'block',
                     margin: '0 auto'
                   }}
@@ -181,7 +181,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
               transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
             >
               <div className={styles.introDesc}>
-                {showIntro && <p style={{ fontSize: 20}}>{words}</p>}
+                {showIntro && <p className={styles.introText}>{words}</p>}
               </div>
               <div className={styles.introTitle}>
                 {/* <motion.h1
@@ -207,7 +207,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
             >
               <h1 className={styles.underlineGradient}>Why is Your Mental Health Important?</h1>
               <div className={styles.cards}>
-                <div className={styles.card} style={{ backgroundColor: "#E2DADB" }}>
+                <div className={styles.card} style={{ backgroundColor: "#7F8CAA" }}>
                   <img
                     src="https://imgur.com/Yc29EYI.png"
                     alt="image1"
@@ -219,7 +219,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                     <p>Mental health is closely linked to physical health. Good mental health helps individuals manage stress, make healthy decisions, and maintain energy levels, which are crucial for leading a balanced life.</p>
                   </div>
                 </div>
-                <div className={styles.card} style={{ backgroundColor: "#DAE2DF" }}>
+                <div className={styles.card} style={{ backgroundColor: "#7F8CAA" }}>
                   <img
                     src="https://imgur.com/pwLlwTq.png"
                     alt="image1"
@@ -231,7 +231,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
                     <p>A healthy mind fosters focus, creativity, and efficiency, whether at work, school, or in personal endeavors. Mental well-being enables people to perform at their best.</p>
                   </div>
                 </div>
-                <div className={styles.card} style={{ backgroundColor: "#E2DADB" }}>
+                <div className={styles.card} style={{ backgroundColor: "#7F8CAA" }}>
                   <img
                     src="https://imgur.com/eMRif3U.png"
                     alt="image1"

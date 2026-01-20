@@ -2,7 +2,7 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useEffect, useState } from 'react';
-import { headers } from 'next/headers';
+
 
 interface HappinessRecord {
     _id: string;

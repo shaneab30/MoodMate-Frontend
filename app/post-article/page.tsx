@@ -256,7 +256,7 @@ const AddArticle: FunctionComponent<AddArticleProps> = () => {
                         ))}
                     </div>
                     <div className={styles.containerButtons}>
-                        <Button variant="contained" type="submit" onClick={handleClick}>Submit</Button>
+                        <Button variant="contained" type="submit" onClick={handleClick} sx={{ backgroundColor: '#B8CFCE', color: '#ffffff', fontWeight: 'bold' }}>Submit</Button>
                         <Snackbar open={open} autoHideDuration={100000} onClose={handleClose}
                             sx={{
                                 zIndex: 1000,

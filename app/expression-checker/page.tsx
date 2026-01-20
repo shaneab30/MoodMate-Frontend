@@ -117,7 +117,7 @@ const ExpressionChecker: FunctionComponent = () => {
         <Box
             sx={{
                 minHeight: '100vh',
-                background: 'linear-gradient(135deg, #eedbf0ff 0%, #ff8999ff 100%)',
+                background: '#EAEFEF',
                 py: 4,
                 px: { xs: 2, md: 4 }
             }}
@@ -127,12 +127,12 @@ const ExpressionChecker: FunctionComponent = () => {
                 <Fade in timeout={600}>
                     <Box sx={{ textAlign: 'center', mb: 4 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                            <EmojiEmotionsIcon sx={{ fontSize: 60, color: 'white' }} />
+                            <EmojiEmotionsIcon sx={{ fontSize: 60, color: '#7F8CAA' }} />
                         </Box>
                         <Typography
                             variant="h2"
                             sx={{
-                                color: 'white',
+                                color: '#7F8CAA',
                                 fontWeight: 700,
                                 mb: 1,
                                 fontSize: { xs: '2rem', md: '3rem' }
@@ -143,7 +143,7 @@ const ExpressionChecker: FunctionComponent = () => {
                         <Typography
                             variant="h6"
                             sx={{
-                                color: 'rgba(255,255,255,0.9)',
+                                color: '#7F8CAA',
                                 fontWeight: 300
                             }}
                         >
@@ -159,7 +159,7 @@ const ExpressionChecker: FunctionComponent = () => {
                         sx={{
                             p: { xs: 3, md: 5 },
                             borderRadius: 4,
-                            background: 'rgba(255, 255, 255, 0.95)',
+                            background: '#7F8CAA',
                             backdropFilter: 'blur(10px)'
                         }}
                     >
@@ -174,7 +174,7 @@ const ExpressionChecker: FunctionComponent = () => {
                                 borderRadius: 3,
                                 background: image 
                                     ? 'transparent' 
-                                    : 'linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%)',
+                                    : '#EAEFEF',
                                 border: '2px dashed',
                                 borderColor: image ? 'transparent' : 'rgba(240, 147, 251, 0.3)',
                                 position: 'relative',
@@ -229,7 +229,7 @@ const ExpressionChecker: FunctionComponent = () => {
                                         mb: 3,
                                         p: 3,
                                         borderRadius: 3,
-                                        background: 'linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.15) 100%)'
+                                        background: '#7F8CAA'
                                     }}
                                 >
                                     <Typography variant="h4" sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
@@ -261,7 +261,7 @@ const ExpressionChecker: FunctionComponent = () => {
                                 startIcon={<CloudUploadIcon />}
                                 disabled={loading}
                                 sx={{
-                                    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                                    background: '#B8CFCE',
                                     color: 'white',
                                     px: 5,
                                     py: 2,
@@ -269,10 +269,10 @@ const ExpressionChecker: FunctionComponent = () => {
                                     fontWeight: 600,
                                     borderRadius: 3,
                                     textTransform: 'none',
-                                    boxShadow: '0 4px 20px rgba(245, 87, 108, 0.4)',
+                                    // boxShadow: '0 4px 20px rgba(234, 239, 239, 0.1)',
                                     '&:hover': {
-                                        background: 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
-                                        boxShadow: '0 6px 25px rgba(245, 87, 108, 0.5)',
+                                        background: '#B8CFCE',
+                                        boxShadow: '0 6px 25px rgba(234, 239, 239, 0.2)',
                                         transform: 'translateY(-2px)'
                                     },
                                     transition: 'all 0.3s ease'
@@ -287,7 +287,7 @@ const ExpressionChecker: FunctionComponent = () => {
                             </Button>
                             <Typography
                                 variant="body2"
-                                color="text.secondary"
+                                color="#ffffff"
                                 sx={{ mt: 2 }}
                             >
                                 Supported formats: JPG, PNG, GIF
