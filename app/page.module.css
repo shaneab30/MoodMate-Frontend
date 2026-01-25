@@ -88,38 +88,48 @@
   /* Reduce margin */
 }
 
-/* .introContainer {
-  min-height: 100vh;
-  padding-left: 20px;
-  color: black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: var(--font-mono);
-} */
-
 .intro {
   min-height: 90vh;
   color: black;
-  padding: 80px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  padding: 100px;
+  /* Remove display: flex, flex-direction, etc. */
   font-family: var(--font-mono);
-  gap: 60px;
-  /* background: linear-gradient(50deg, rgba(243, 232, 255, 0.95) 0%, rgba(252, 231, 243, 0.95) 50%, rgba(219, 234, 254, 0.95) 100%); */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  gap: 100px;
+}
+
+.wobbleContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  /* Use !important as a last resort if the component is being stubborn */
+  padding: 60px !important; 
+  box-sizing: border-box;
+
+}
+
+@media (min-width: 1024px) {
+  .wobbleContent {
+    padding-left: 80px !important;
+    padding-right: 40% !important; /* Forces text to the left half */
+  }
+}
+
+.wobbleText {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75;
+  color: #ffffff;
+  margin-top: 1.5rem;
 }
 
 .introTitle {
   text-align: center;
-  padding-right: 80px;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   font-family: var(--font-mono);
 }
 
@@ -272,7 +282,6 @@
   }
 
   .intro {
-    flex-direction: column;
     padding: 40px 10px;
     gap: 20px;
     min-height: unset;
@@ -287,15 +296,14 @@
     border-radius: 14px;
   }
 
-  .introText {
-    font-size: clamp(0.9rem, 1.5vw, 2rem); /* responsive font size between 0.8rem and 1.5vw */;
-    line-height: 1.6;
-  }
-
   .introTitle {
     width: 100%;
     padding: 0;
     text-align: center;
+  }
+
+  .wobbleContent {
+    padding: 30px !important;
   }
 
   .cardsContainer {
