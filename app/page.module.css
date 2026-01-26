@@ -26,7 +26,7 @@
   animation: float 8s ease-in-out infinite;
 }
 
-.blobs2{
+.blobs2 {
   position: absolute;
   bottom: 10%;
   right: 5%;
@@ -38,7 +38,7 @@
   animation: float 10s ease-in-out infinite reverse;
 }
 
-.content{
+.content {
   max-width: 1200px;
   width: 100%;
   display: grid;
@@ -96,24 +96,34 @@
   font-family: var(--font-mono);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  gap: 100px;
+  gap: 80px;
 }
 
 .wobbleContent {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
-  /* Use !important as a last resort if the component is being stubborn */
-  padding: 60px !important; 
+  padding: 60px;
   box-sizing: border-box;
-
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 1024px) {
   .wobbleContent {
     padding-left: 80px !important;
-    padding-right: 40% !important; /* Forces text to the left half */
+    padding-right: 40% !important;
+    min-height: 500px;
+    /* ✅ use min-height, not height */
+  }
+
+  .wobbleContent h2 {
+    font-size: 2.7rem !important;
+  }
+
+  .wobbleText {
+    font-size: 15px !important;
+    line-height: 1.6;
   }
 }
 
@@ -177,9 +187,12 @@
   transform: translateY(-3px) scale(1.05);
 
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.3),     /* depth shadow */
-    0 10px 20px rgba(0, 0, 0, 0.2),     /* mid shadow */
-    0 0 25px rgba(127, 140, 170, 0.4);  /* soft glow */
+    0 25px 50px rgba(0, 0, 0, 0.3),
+    /* depth shadow */
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    /* mid shadow */
+    0 0 25px rgba(127, 140, 170, 0.4);
+  /* soft glow */
 
   transition:
     transform 0.45s ease,
@@ -229,9 +242,12 @@
   transform: translateY(-10px) scale(1.05);
 
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.35),     /* depth shadow */
-    0 10px 20px rgba(0, 0, 0, 0.25),     /* mid shadow */
-    0 0 25px rgba(127, 140, 170, 0.45);  /* soft glow */
+    0 25px 50px rgba(0, 0, 0, 0.35),
+    /* depth shadow */
+    0 10px 20px rgba(0, 0, 0, 0.25),
+    /* mid shadow */
+    0 0 25px rgba(127, 140, 170, 0.45);
+  /* soft glow */
 
   transition:
     transform 0.45s ease,

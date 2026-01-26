@@ -182,12 +182,12 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
         >
           {/* LEFT: Wobble Card */}
           <WobbleCard
-            containerClassName="relative w-full bg-[rgba(127,140,170,1)] min-h-[450px] rounded-3xl overflow-hidden order-2 lg:order-1"
+            containerClassName="relative w-full bg-[rgba(127,140,170,1)] min-h-[450px] rounded-3xl overflow-hidden order-2 lg:order-1 z-0"
           >
             {/* Apply the CSS Module class here */}
             <div className={styles.wobbleContent}>
               <div style={{ maxWidth: '600px' }}>
-                <h2 className="text-left text-3xl lg:text-5xl font-bold text-white leading-tight">
+                <h2 className="text-left font-bold text-white leading-tight">
                   At Moodmate
                 </h2>
                 <p className={styles.wobbleText}>

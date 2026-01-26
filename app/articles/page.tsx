@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
+import RefreshIcon from '@/components/ui/refresh-icon';
 
 interface ArticlesPageProps { }
 
@@ -163,7 +164,7 @@ const ArticlesPage: FunctionComponent<ArticlesPageProps> = () => {
                     ) : (
                         !loading && (
                             <div className={styles.emptyState}>
-                                <div className={styles.emptyStateIcon}>📚</div>
+                                <div className="flex items-center justify-center mb-16 lg:mb-32"><RefreshIcon className="text-6xl lg:text-7xl" /></div>
                                 <h2 className={styles.emptyStateTitle}>No Articles Yet</h2>
                                 <p className={styles.emptyStateText}>
                                     Check back soon for new content from our community
